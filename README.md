@@ -1,2 +1,2 @@
-# y-yashe
-Collaborative ShEx Text Editor
+# ShareYASHE
+Collaborative Cloud-based ShEx Editor
