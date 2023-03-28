@@ -3,7 +3,7 @@ body {
   color: white;
   text-shadow: 0 0 0.3vw black, 0 0 0.2vw black;
 
-  background-image: url('../wallpaper.png');
+  background-image: url('../images/wallpaper.png');
   background-attachment: fixed;
   background-size: cover;
 }

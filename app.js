@@ -1,16 +1,36 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const app = express();
 
-var app = express();
+const {MongoClient} = require("mongodb");
+app.set('connectionStrings', "mongodb://127.0.0.1:27017");
 
-let rest = require('request');
-app.set('rest', rest);
+const crypto = require('crypto');
+app.set('key', 'abcdefg123456');
+app.set('crypto', crypto);
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+const jwt = require('jsonwebtoken');
+app.set('jwt', jwt);
+
+const expressSession = require('express-session');
+app.use(expressSession({secret: app.get('key'), resave: true, saveUninitialized: true}));
+
+const favicon = require('serve-favicon');
+app.use(favicon(__dirname + '/public/images/favicon.png'));
+
+const repositoriesFactory = require("./repositories/repositoriesFactory.js");
+repositoriesFactory.init(app, MongoClient);
+require('./routes/auth.js')(app, repositoriesFactory);
+require('./routes/index.js')(app, repositoriesFactory);
+require('./routes/users.js')(app, repositoriesFactory);
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -29,9 +49,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

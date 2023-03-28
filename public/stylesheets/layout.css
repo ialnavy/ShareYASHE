@@ -12,7 +12,7 @@ header {
 }
 main {
     grid-area: main;
-    height: 75vh;
+    height: 65vh;
 }
 aside {
     grid-area: aside;

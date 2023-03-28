@@ -1,30 +1,8 @@
-doctype html
-html(lang='en')
-    head
-        meta(charset='UTF-8')
-        title ShareYASHE
+extends mainLayout
 
-        meta(name='author', content='Iván Álvarez López')
-        meta(name='description', content='Collaborative Cloud-based ShEx Editor')
-        meta(name='keywords', content='yashe,shex,uniovi,eii')
-
-        meta(name='viewport', content='width=device-width, initial-scale=1.0')
-
-        link(rel='stylesheet', type='text/css', href='./stylesheets/layout.css')
-        link(rel='stylesheet', type='text/css', href='./stylesheets/style.css')
-    body
-        header
-            h1 ShareYASHE
-            p Collaborative Cloud-based ShEx Editor
-            nav
-                a(title='Main page', accesskey='M', tabindex='1', href='/') Main page
-        aside
-            ul
-                li New item
-        main
-            block content
-        footer
-            p This is a Degree Project for the Bachelor's Degree in Software Engineering.
-            a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
-            p Made by Iván Álvarez López
-            a(href='mailto:ial.navy@protonmail.ch') ial.navy@protonmail.ch
+block bodyContent
+    aside
+        ul
+            li New item
+    main
+        block content

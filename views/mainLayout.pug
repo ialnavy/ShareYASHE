@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        title=title
+
+        meta(name='author', content='Iván Álvarez López')
+        meta(name='description', content='Collaborative Cloud-based ShEx Editor')
+        meta(name='keywords', content='yashe,shex,uniovi,eii')
+
+        meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+        link(rel='stylesheet', type='text/css', href='./stylesheets/layout.css')
+        link(rel='stylesheet', type='text/css', href='./stylesheets/style.css')
+    body
+        header
+            h1=title
+            p Collaborative Cloud-based ShEx Editor
+            p Welcome, #{username}
+            nav
+                a(title='Main page', accesskey='M', tabindex='1', href='/') Main page
+                if username
+                    a(title='Log out', accesskey='L', tabindex='2', href='/logout') Log out
+                else
+                    a(title='Log in', accesskey='L', tabindex='2', href='/login') Log in
+                    a(title='Register', accesskey='R', tabindex='3', href='/register') Register
+        block bodyContent
+        footer
+            p This is a Degree Project for the Bachelor's Degree in Software Engineering.
+            a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
+            p Made by Iván Álvarez López
+            a(href='mailto:ial.navy@protonmail.ch') ial.navy@protonmail.ch

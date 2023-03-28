@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+module.exports = function (app, repositoriesFactory) {
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
+    app.get('/', async function (req, res, next) {
+        if (req.session.username === null
+            || typeof(req.session.username) === "undefined"
+            || req.session.username === '') {
+            res.redirect('/login');
+            return;
+        }
+        res.render('index.pug', {title: 'ShareYASHE', username: new String(req.session.username)});
+    });
+}
