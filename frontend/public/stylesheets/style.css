@@ -1,8 +1,24 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+  font-family: "Lato", sans-serif;
+  color: white;
+  text-shadow: 0 0 0.3vw black, 0 0 0.2vw black;
 
+  background-image: url('../wallpaper.png');
+  background-attachment: fixed;
+  background-size: cover;
+}
+header, aside, footer, nav>a {
+  background-color: #585656;
+  border: 0.2vw solid rgba(255, 255, 255, 0.125);
+}
 a {
-  color: #00B7FF;
+  text-shadow: 0 0 0.3vw white, 0 0 0.2vw white;
+}
+p, a {
+  margin: 0.2vw;
+}
+main {
+  backdrop-filter: blur(1vw);
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 0.2vw solid rgba(255, 255, 255, 0.125);
 }
