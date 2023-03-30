@@ -32,9 +32,15 @@ class PO_Render {
         let sheetsRepository = await this.logicFactory.forSheets();
         if ((await sheetsRepository.countSheetsByUsername(username)) > 0) {
             let sheetsCursor = await sheetsRepository.getSheetsByUsername(username);
-            while (await sheetsCursor.hasNext())
-                sheets.push(await sheetsCursor.next());
+            while (await sheetsCursor.hasNext()) {
+                let persistentSheet = await sheetsCursor.next();
+                sheets.push({
+                    sheetId: persistentSheet._id.toString(),
+                    title: persistentSheet.title.toString()
+                });
+            }
         }
+        console.log(sheets);
         return sheets;
     }
 

@@ -7,7 +7,8 @@ block bodyContent
         if ownedSheets
             ul
                 each sheet in ownedSheets
-                    li #{sheet.title}
+                    li
+                        a(href='/sheet/' + sheet.sheetId) #{sheet.title}
         else
             p You haven't any sheet yet.
     main

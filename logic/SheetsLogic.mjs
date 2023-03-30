@@ -1,9 +1,21 @@
 import {AbstractRepository} from "../repositories/AbstractRepository.mjs";
 
 class SheetsLogic {
-    constructor(app, mongoClient) {
-        this.sheetsRepo = AbstractRepository.forSheets(app, mongoClient);
-        this.usersRepo = AbstractRepository.forUsers(app, mongoClient);
+    constructor(app, mongoClient, yjs, websocketProvider, codemirrorBinding, yashe) {
+        this.app = app;
+        this.mongoClient = mongoClient;
+        this.yjs = yjs;
+        this.websocketProvider = websocketProvider;
+        this.codemirrorBinding = codemirrorBinding;
+        this.yashe = yashe;
+    }
+
+    get sheetsRepo() {
+        return AbstractRepository.forSheets(this.app, this.mongoClient);
+    }
+
+    get usersRepo() {
+        return AbstractRepository.forUsers(this.app, this.mongoClient);
     }
 
     async createSheet(username) {
@@ -13,7 +25,7 @@ class SheetsLogic {
         let i = this.sheetsRepo.count({owners: username});
 
         return await this.sheetsRepo.insertOne({
-            title: (new String('Untitled sheet ')).concat((new String((new Number(i)) + 1)).toString()),
+            title: 'Untitled sheet',
             content: '',
             owners: [username]
         });

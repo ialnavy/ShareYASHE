@@ -2,7 +2,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/register', async function (req, res) {
         /* Render logic */
-        let registerRenderObj = await logicFactory.forRegister(req, res);
+        let registerRenderObj = await logicFactory.forRegisterRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -17,7 +17,7 @@ module.exports = function (app, logicFactory) {
 
     app.post('/register', async function (req, res) {
         /* Render logic */
-        let registerRenderObj = await logicFactory.forRegister(req, res);
+        let registerRenderObj = await logicFactory.forRegisterRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -63,7 +63,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/login', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLogin(req, res);
+        let loginRenderObj = await logicFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -78,7 +78,7 @@ module.exports = function (app, logicFactory) {
 
     app.post('/login', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLogin(req, res);
+        let loginRenderObj = await logicFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -115,7 +115,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/logout', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLogin(req, res);
+        let loginRenderObj = await logicFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
