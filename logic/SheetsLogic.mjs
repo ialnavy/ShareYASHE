@@ -31,6 +31,20 @@ class SheetsLogic {
         });
     }
 
+    async countSheetsById(sheetId) {
+        if (sheetId === null || typeof (sheetId) === 'undefined')
+            throw new Error('An invalid id was given.');
+
+        return await this.sheetsRepo.count({_id: sheetId});
+    }
+
+    async getSheetById(sheetId) {
+        if (sheetId === null || typeof (sheetId) === 'undefined')
+            throw new Error('An invalid id was given.');
+
+        return await this.sheetsRepo.findOne({_id: sheetId});
+    }
+
     async countSheetsByUsername(username) {
         if (username === null || typeof (username) === 'undefined'
             || username === '' || username.length === 0)

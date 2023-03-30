@@ -1,9 +1,3 @@
-import {MongoClient} from "mongodb";
-import YJS from "yjs";
-import {WebsocketProvider} from "y-websocket";
-import {CodemirrorBinding} from "y-codemirror";
-import YASHE from "yashe";
-
 module.exports = {
 
     mongoClient: null,
@@ -11,7 +5,7 @@ module.exports = {
     yjs: null,
     websocketProvider: null,
     codemirrorBinding: null,
-    yashe: yashe,
+    yashe: null,
 
     init: function (app, mongoClient, yjs, websocketProvider, codemirrorBinding, yashe) {
         this.app = app;

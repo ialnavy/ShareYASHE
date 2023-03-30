@@ -1,3 +1,5 @@
+const {ObjectId} = require("mongodb").ObjectId;
+
 module.exports = function (app, logicFactory) {
 
     app.get('/createSheet', async function (req, res) {
@@ -6,7 +8,7 @@ module.exports = function (app, logicFactory) {
         let sheetsLogic = await logicFactory.forSheets();
 
         if (!authLogic.isUserLogged()) {
-            res.redirect("/login");
+            res.redirect('/login');
             return;
         }
 
@@ -23,11 +25,18 @@ module.exports = function (app, logicFactory) {
         let sheetsLogic = await logicFactory.forSheets();
 
         if (!authLogic.isUserLogged()) {
-            res.redirect("/login");
+            res.redirect('/login');
             return;
         }
 
-        let givenSheetId = req.params.sheet_id;
+        let givenSheetId = new ObjectId(req.params.sheet_id);
+        if (await sheetsLogic.countSheetsById(givenSheetId) === 0) {
+            res.redirect('/');
+            return;
+        }
 
+        let sheet = await sheetsLogic.getSheetById(givenSheetId);
+        console.log(sheet);
+        res.redirect('/');
     });
 }

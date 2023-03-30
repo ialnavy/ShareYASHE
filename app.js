@@ -26,10 +26,13 @@ app.use(expressSession({secret: app.get('key'), resave: true, saveUninitialized:
 const favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
-const YJS = require("yjs");
-const {WebsocketProvider} = require("y-websocket");
-const {CodemirrorBinding} = require("y-codemirror");
-const YASHE = require("yashe");
+require('browser-env')();
+require('codemirror');
+require('clipboard');
+const YJS = require('yjs');
+const {WebsocketProvider} = require('y-websocket');
+const {CodemirrorBinding} = require('y-codemirror');
+const YASHE = require('yashe');
 
 const logicFactory = require("./logic/logicFactory.js");
 logicFactory.init(app, MongoClient, YJS, WebsocketProvider, CodemirrorBinding, YASHE);
