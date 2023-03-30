@@ -2,7 +2,13 @@ extends mainLayout
 
 block bodyContent
     aside
-        ul
-            li New item
+        form(action='/createSheet')
+            button(type='submit') New sheet
+        if ownedSheets
+            ul
+                each sheet in ownedSheets
+                    li #{sheet.title}
+        else
+            p You haven't any sheet yet.
     main
         block content

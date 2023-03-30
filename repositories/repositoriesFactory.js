@@ -5,7 +5,10 @@ module.exports = {
         this.mongoClient = mongoClient;
         this.app = app;
     }, forUsers: async function () {
-        let AbstractRepository = (await import('./abstractRepository.mjs')).AbstractRepository;
+        let AbstractRepository = (await import('./AbstractRepository.mjs')).AbstractRepository;
         return new AbstractRepository(this.app, this.mongoClient, "users");
+    }, forSheets: async function () {
+        let AbstractRepository = (await import('./AbstractRepository.mjs')).AbstractRepository;
+        return new AbstractRepository(this.app, this.mongoClient, "sheets");
     }
 };

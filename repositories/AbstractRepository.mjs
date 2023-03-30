@@ -7,12 +7,31 @@ class AbstractRepository {
         this.collectionName = collectionName;
     }
 
+    static forUsers(app, mongoClient) {
+        return new AbstractRepository(app, mongoClient, "users");
+    }
+
+    static forSheets(app, mongoClient) {
+        return new AbstractRepository(app, mongoClient, "sheets");
+    }
+
     async findOne(filter, options) {
         try {
             let client = await this.mongoClient.connect(this.app.get('connectionStrings'));
             let database = client.db(AbstractRepository.clientDB);
             let collection = database.collection(this.collectionName);
             return await collection.findOne(filter, options);
+        } catch (error) {
+            throw (error);
+        }
+    }
+
+    async findMany(filter, projection, options) {
+        try {
+            let client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            let database = client.db(AbstractRepository.clientDB);
+            let collection = database.collection(this.collectionName);
+            return await collection.find(filter, projection, options);
         } catch (error) {
             throw (error);
         }

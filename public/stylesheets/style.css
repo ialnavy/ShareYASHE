@@ -1,24 +1,50 @@
 body {
-  font-family: "Lato", sans-serif;
-  color: white;
-  text-shadow: 0 0 0.3vw black, 0 0 0.2vw black;
+    font-family: "Lato", sans-serif;
+    color: white;
+    text-shadow: 0 0 0.3vw black, 0 0 0.2vw black;
 
-  background-image: url('../images/wallpaper.png');
-  background-attachment: fixed;
-  background-size: cover;
+    background-image: url('../images/wallpaper.png');
+    background-attachment: fixed;
+    background-size: cover;
 }
-header, aside, footer, nav>a {
-  background-color: #585656;
-  border: 0.2vw solid rgba(255, 255, 255, 0.125);
+
+header, aside, footer, nav > form {
+    background-color: #585656;
+    border: 0.2vw solid rgba(255, 255, 255, 0.125);
 }
+
 a {
-  text-shadow: 0 0 0.3vw white, 0 0 0.2vw white;
+    text-shadow: 0 0 0.3vw white, 0 0 0.2vw white;
 }
+
 p, a {
-  margin: 0.2vw;
+    margin: 0.2vw;
 }
+
+header > p:nth-of-type(3) {
+    font-weight: bold;
+}
+
 main {
-  backdrop-filter: blur(1vw);
-  background-color: rgba(255, 255, 255, 0.3);
-  border: 0.2vw solid rgba(255, 255, 255, 0.125);
+    backdrop-filter: blur(1vw);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 0.2vw solid rgba(255, 255, 255, 0.125);
+}
+
+input, button {
+    border: solid 1.25px #e0e0e0;
+    box-shadow: 0 0.75px 1px #c0c0c0;
+    border-radius: 6px;
+
+    background-color: #FAFBFC;
+    box-sizing: border-box;
+}
+
+input:hover, button {
+    background-color: #f4f4f4;
+}
+
+input:active, button {
+    box-shadow: none;
+    opacity: .875;
 }

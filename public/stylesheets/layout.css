@@ -16,6 +16,8 @@ main {
 }
 aside {
     grid-area: aside;
+    display: flex;
+    flex-direction: column;
 }
 footer {
     grid-area: footer;

@@ -26,11 +26,12 @@ app.use(expressSession({secret: app.get('key'), resave: true, saveUninitialized:
 const favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
-const repositoriesFactory = require("./repositories/repositoriesFactory.js");
-repositoriesFactory.init(app, MongoClient);
-require('./routes/auth.js')(app, repositoriesFactory);
-require('./routes/index.js')(app, repositoriesFactory);
-require('./routes/users.js')(app, repositoriesFactory);
+const logicFactory = require("./logic/logicFactory.js");
+logicFactory.init(app, MongoClient);
+
+require('./routes/auth.js')(app, logicFactory);
+require('./routes/index.js')(app, logicFactory);
+require('./routes/sheets.js')(app, logicFactory);
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

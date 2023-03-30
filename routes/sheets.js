@@ -1,17 +1,19 @@
 module.exports = function (app, logicFactory) {
 
-    app.get('/', async function (req, res) {
+    app.get('/createSheet', async function (req, res) {
         /* Render logic */
         let indexRenderObj = await logicFactory.forIndex(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
+        let sheetsLogic = await logicFactory.forSheets();
 
         if (!authLogic.isUserLogged()) {
             res.redirect("/login");
             return;
         }
 
-        indexRenderObj.render();
+        await sheetsLogic.createSheet(authLogic.getLoggedUsername());
+        res.redirect('/');
     });
 }

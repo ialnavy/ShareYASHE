@@ -1,144 +1,132 @@
-module.exports = function (app, repositoriesFactory) {
+module.exports = function (app, logicFactory) {
 
-    app.get('/register', function (req, res) {
-        res.render("register.pug", {title: 'ShareYASHE - Register'});
+    app.get('/register', async function (req, res) {
+        /* Render logic */
+        let registerRenderObj = await logicFactory.forRegister(req, res);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+
+        if (authLogic.isUserLogged()) {
+            res.redirect("/");
+            return;
+        }
+
+        registerRenderObj.render();
     });
 
     app.post('/register', async function (req, res) {
-        let securePassword = app.get("crypto")
-            .createHmac('sha512', app.get('key'))
-            .update(req.body.password).digest('hex');
-        let user = {email: req.body.email, username: req.body.username, password: securePassword};
-        let usersRepository = await repositoriesFactory.forUsers();
+        /* Render logic */
+        let registerRenderObj = await logicFactory.forRegister(req, res);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+        let usersLogic = await logicFactory.forUsers();
+
+        if (authLogic.isUserLogged()) {
+            res.redirect('/');
+            return;
+        }
 
         // Validate parameters
-        if (!isEmailValid(req.body.email)) {
-            res.render("register.pug", {title: 'ShareYASHE - Register', message: 'The email is not valid.'});
+        if (!authLogic.isEmailValid(req.body.email)) {
+            registerRenderObj.render('The email is not valid.');
             return;
-        }
-
-        if ((await usersRepository.count({email: req.body.email}, null)) > 0) {
-            res.render("register.pug", {
-                title: 'ShareYASHE - Register',
-                message: 'There is already another user with the same email.'
-            });
+        } else if (!authLogic.isUsernameValid(req.body.username)) {
+            registerRenderObj.render('The username must be longer than 3 characters.');
             return;
-        }
-
-        if (typeof (req.body.username) === "undefined"
-            || req.body.username === null
-            || req.body.username.length < 3) {
-            res.render("register.pug", {
-                title: 'ShareYASHE - Register',
-                message: 'The username must be longer than 3 characters.'
-            });
+        } else if (!authLogic.isPasswordValid(req.body.password)) {
+            registerRenderObj.render('The password must be longer than 3 characters.');
             return;
-        }
-
-        if ((await usersRepository.count({username: req.body.username}, null)) > 0) {
-            res.render("register.pug", {
-                title: 'ShareYASHE - Register',
-                message: 'There is already another user with the same username.'
-            });
+        } else if ((await usersLogic.countUsersByUsername(req.body.username)) > 0) {
+            registerRenderObj.render('There is already another user with the same username.');
             return;
-        }
-
-        if (typeof (req.body.password) === "undefined"
-            || req.body.password === null
-            || req.body.password.length < 3) {
-            res.render("register.pug", {
-                title: 'ShareYASHE - Register',
-                message: 'The password must be longer than 3 characters.'
-            });
+        } else if ((await usersLogic.countUsersByEmail(req.body.email)) > 0) {
+            registerRenderObj.render('There is already another user with the same email.');
             return;
         }
 
         // Perform task
         try {
-            // DO NOT REMOVE 'await'
-            let userId = await usersRepository.insertOne(user);
+            let user = {
+                email: req.body.email,
+                username: req.body.username,
+                password: authLogic.cipherPassword(req.body.password, app)
+            };
+            usersLogic.createUser(user); // userID is returned
 
-            res.render("login.pug", {title: 'ShareYASHE - Log in', message: 'User registered successfully.'});
+            res.redirect('/login');
         } catch (error) {
-            res.render("register.pug", {
-                title: 'ShareYASHE - Register',
-                message: 'An error happened while the user was being registered.'
-            });
+            registerRenderObj.render('An error happened while the user was being registered.');
         }
     });
 
-    app.get('/login', function (req, res) {
-        res.render("login.pug", {title: 'ShareYASHE - Log in'});
+    app.get('/login', async function (req, res) {
+        /* Render logic */
+        let loginRenderObj = await logicFactory.forLogin(req, res);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+
+        if (authLogic.isUserLogged()) {
+            res.redirect('/');
+            return;
+        }
+
+        loginRenderObj.render();
     });
 
     app.post('/login', async function (req, res) {
-        let securePassword = app.get("crypto")
-            .createHmac('sha512', app.get('key'))
-            .update(req.body.password).digest('hex');
-        let filter = {username: req.body.username, password: securePassword};
-        let options = {};
-        let usersRepository = await repositoriesFactory.forUsers();
+        /* Render logic */
+        let loginRenderObj = await logicFactory.forLogin(req, res);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+        let usersLogic = await logicFactory.forUsers();
+
+        if (authLogic.isUserLogged()) {
+            res.redirect("/");
+            return;
+        }
 
         // Perform task
         try {
-            // DO NOT REMOVE 'await'
-            let user = await usersRepository.findOne(filter, {});
-            if (user === null) {
-                req.session.username = null;
-                res.render("login.pug", {title: 'ShareYASHE - Log in', message: 'The credentials don\'t match.'});
+            if (usersLogic.countUsersByUsername(req.body.username) === 0) {
+                loginRenderObj.render('There is no such username registered.');
                 return;
             }
-            req.session.username = user.username;
-            res.redirect("/");
+            let user = usersLogic.findUser({
+                username: req.body.username,
+                password: authLogic.cipherPassword(req.body.password, app)
+            });
+            if (user === null) {
+                req.session.username = null;
+                loginRenderObj.render('The password is incorrect.');
+                return;
+            }
+
+            req.session.username = req.body.username;
+            res.redirect('/');
         } catch (error) {
             req.session.username = null;
-            res.render("login.pug", {
-                title: 'ShareYASHE - Log in',
-                message: 'An error happened while the user was being logged in.'
-            });
+            loginRenderObj.render('An error happened while the user was being logged in.');
         }
     });
 
-    app.get('/logout', function (req, res) {
-        if (req.session.username === null
-            || typeof (req.session.username) === "undefined"
-            || req.session.username === '') {
-            res.render("login.pug", {title: 'ShareYASHE - Log in'});
+    app.get('/logout', async function (req, res) {
+        /* Render logic */
+        let loginRenderObj = await logicFactory.forLogin(req, res);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+
+        if (!authLogic.isUserLogged()) {
+            res.redirect('/');
             return;
         }
 
         req.session.username = null;
-        res.render("login.pug", {
-            title: 'ShareYASHE - Log in',
-            message: 'The user has been logged out successfully.'
-        });
-
+        res.redirect('/');
     });
 }
 
-function isEmailValid(email) {
-    let emailRegex = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-
-    if (!email)
-        return false;
-
-    if (email.length > 254)
-        return false;
-
-    let valid = emailRegex.test(email);
-    if (!valid)
-        return false;
-
-    // Further checking of some things regex can't handle
-    let parts = email.split("@");
-    if (parts[0].length > 64)
-        return false;
-
-    let domainParts = parts[1].split(".");
-    if (domainParts.some(function (part) {
-        return part.length > 63;
-    }))
-        return false;
-
-    return true;
-}

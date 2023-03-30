@@ -16,7 +16,12 @@ html(lang='en')
         header
             h1=title
             p Collaborative Cloud-based ShEx Editor
-            p Welcome, #{username}
+            if username
+                p Welcome, #{username}!
+            else
+                p Welcome! You're not logged in yet.
+            if message
+                p=message
             nav
                 a(title='Main page', accesskey='M', tabindex='1', href='/') Main page
                 if username
