@@ -10,8 +10,15 @@ html(lang='en')
 
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
-        link(rel='stylesheet', type='text/css', href='./stylesheets/layout.css')
-        link(rel='stylesheet', type='text/css', href='./stylesheets/style.css')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/layout.css')
+        link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
+
+        if isSheetEditing
+            link(rel='stylesheet', type='text/css', href='/scripts/codemirror.css')
+            link(rel='stylesheet', type='text/css', href='/scripts/yashe.min.css')
+
+            script(src='/scripts/codemirror.js')
+            script(src='/scripts/y-yashe.mjs')
     body
         header
             h1=title

@@ -22,6 +22,8 @@ class PO_Render {
             let username = authLogic.getLoggedUsername();
             renderParameters['username'] = username;
             renderParameters['ownedSheets'] = await this.getOwnedSheets(username);
+            if (this.isSheetEditing())
+                renderParameters['isSheetEditing'] = true;
         }
 
         return renderParameters;
@@ -40,14 +42,18 @@ class PO_Render {
                 });
             }
         }
-        console.log(sheets);
         return sheets;
+    }
+
+    isSheetEditing() {
+        return false;
     }
 
     async render(message = null) {
         this.message = message;
         this.response.render(this.renderTemplate, await this.getRenderParameters());
     }
+
 }
 
 export {PO_Render};

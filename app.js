@@ -27,7 +27,6 @@ const favicon = require('serve-favicon');
 app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 require('browser-env')();
-require('codemirror');
 require('clipboard');
 const YJS = require('yjs');
 const {WebsocketProvider} = require('y-websocket');

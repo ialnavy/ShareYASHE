@@ -1,4 +1,4 @@
-const {ObjectId} = require("mongodb").ObjectId;
+const {ObjectId} = require("mongodb");
 
 module.exports = function (app, logicFactory) {
 
@@ -18,7 +18,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/sheet/:sheet_id', async function (req, res) {
         /* Render logic */
-        let sheetRenderObj = await logicFactory.forSheetRender(req, res);
+        let sheetRenderObj = await logicFactory.forSheetRender(req, res, logicFactory);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -37,6 +37,7 @@ module.exports = function (app, logicFactory) {
 
         let sheet = await sheetsLogic.getSheetById(givenSheetId);
         console.log(sheet);
-        res.redirect('/');
+
+        sheetRenderObj.render();
     });
 }
