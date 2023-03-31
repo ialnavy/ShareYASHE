@@ -14,11 +14,12 @@ html(lang='en')
         link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
 
         if isSheetEditing
-            link(rel='stylesheet', type='text/css', href='/scripts/codemirror.css')
-            link(rel='stylesheet', type='text/css', href='/scripts/yashe.min.css')
+            link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css')
+            link(rel='stylesheet', type='text/css', href='https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.min.css')
 
-            script(src='/scripts/codemirror.js')
-            script(src='/scripts/y-yashe.mjs')
+            script(src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js')
+            script(src='https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.bundled.min.js')
+            script(type='module', src='/scripts/shareyashe.js')
     body
         header
             h1=title
