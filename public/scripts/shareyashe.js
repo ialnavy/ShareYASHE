@@ -17,16 +17,27 @@ class ShareYASHE_Client {
     createEditor() {
         let ydoc = new Y.Doc();
         let provider = new WebsocketProvider(
-            'wss://demos.yjs.dev',
-            'codemirror-demo',
+            'ws://127.0.0.1:1234',
+            '',
             ydoc
         );
-        let ytext = ydoc.getText('codemirror')
+        let ytext = ydoc.getText('codemirror');
 
         this.editor = YASHE.fromTextArea(
             document.querySelector(ShareYASHE_Client.EDITOR_TEXTAREA_SELECTOR), {
                 lineNumbers: true
             });
+
+        /*ytext.insert(0, 'PREFIX :       <http://example.org/>');
+        ytext.insert(1, 'PREFIX schema: <http://schema.org/>');
+        ytext.insert(2, 'PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>');
+        ytext.insert(3, '');
+        ytext.insert(4, ':User {');
+        ytext.insert(5, '  schema:name          xsd:string ;');
+        ytext.insert(6, '  schema:birthDate     xsd:date?  ;');
+        ytext.insert(7, '  schema:gender        [ schema:Male schema:Female ] OR xsd:string ;');
+        ytext.insert(8, '  schema:knows         IRI @:User*');
+        ytext.insert(9, '}');*/
 
         let binding = new CodemirrorBinding(ytext, this.editor, provider.awareness);
 

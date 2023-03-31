@@ -1,8 +1,11 @@
+const http = require('http');
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const WebSocket = require('ws');
+const setupWSConnection = require('./wsServer/utils.js').setupWSConnection;
 
 const app = express();
 
@@ -28,13 +31,9 @@ app.use(favicon(__dirname + '/public/images/favicon.png'));
 
 require('browser-env')();
 require('clipboard');
-const YJS = require('yjs');
-const {WebsocketProvider} = require('y-websocket');
-const {CodemirrorBinding} = require('y-codemirror');
-const YASHE = require('yashe');
 
 const logicFactory = require("./logic/logicFactory.js");
-logicFactory.init(app, MongoClient, YJS, WebsocketProvider, CodemirrorBinding, YASHE);
+logicFactory.init(app, MongoClient);
 
 require('./routes/auth.js')(app, logicFactory);
 require('./routes/index.js')(app, logicFactory);
@@ -57,6 +56,35 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// WebSockets server
+
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT || 1234;
+
+const server = http.createServer((request, response) => {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end('okay');
+});
+
+const wss = new WebSocket.Server({noServer: true});
+wss.on('connection', setupWSConnection);
+
+server.on('upgrade', (request, socket, head) => {
+    // You may check auth of request here..
+    // See https://github.com/websockets/ws#client-authentication
+    /**
+     * @param {any} ws
+     */
+    const handleAuth = ws => {
+        wss.emit('connection', ws, request);
+    }
+    wss.handleUpgrade(request, socket, head, handleAuth);
+});
+
+server.listen(port, host, () => {
+    console.log(`running at '${host}' on port ${port}`);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

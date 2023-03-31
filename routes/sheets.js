@@ -36,7 +36,6 @@ module.exports = function (app, logicFactory) {
         }
 
         let sheet = await sheetsLogic.getSheetById(givenSheetId);
-        console.log(sheet);
 
         sheetRenderObj.render();
     });

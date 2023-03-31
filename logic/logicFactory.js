@@ -2,18 +2,10 @@ module.exports = {
 
     mongoClient: null,
     app: null,
-    yjs: null,
-    websocketProvider: null,
-    codemirrorBinding: null,
-    yashe: null,
 
-    init: function (app, mongoClient, yjs, websocketProvider, codemirrorBinding, yashe) {
+    init: function (app, mongoClient) {
         this.app = app;
         this.mongoClient = mongoClient;
-        this.yjs = yjs;
-        this.websocketProvider = websocketProvider;
-        this.codemirrorBinding = codemirrorBinding;
-        this.yashe = yashe;
     },
 
     /* Logic */
@@ -22,7 +14,7 @@ module.exports = {
         return new AuthLogic(session);
     }, forSheets: async function () {
         let SheetsLogic = (await import('./SheetsLogic.mjs')).SheetsLogic;
-        return new SheetsLogic(this.app, this.mongoClient, this.yjs, this.websocketProvider, this.codemirrorBinding, this.yashe);
+        return new SheetsLogic(this.app, this.mongoClient);
     }, forUsers: async function () {
         let UsersLogic = (await import('./UsersLogic.mjs')).UsersLogic;
         return new UsersLogic(this.app, this.mongoClient);
