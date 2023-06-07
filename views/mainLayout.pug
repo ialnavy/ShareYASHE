@@ -13,13 +13,14 @@ html(lang='en')
         link(rel='stylesheet', type='text/css', href='/stylesheets/layout.css')
         link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
 
-        if isSheetEditing
+        if requestedScripts
             link(rel='stylesheet', type='text/css', href='https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css')
             link(rel='stylesheet', type='text/css', href='https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.min.css')
 
             script(src='https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js')
             script(src='https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.bundled.min.js')
-            script(type='module', src='/scripts/shareyashe.js')
+            each requestedScript in requestedScripts
+                script(type='module', src='/scripts/' + requestedScript)
     body
         header
             h1=title
@@ -32,11 +33,12 @@ html(lang='en')
                 p=message
             nav
                 a(title='Main page', accesskey='M', tabindex='1', href='/') Main page
+                a(title='Create sheet', accesskey='C', tabindex='2', href='/createSheet') Create sheet
                 if username
-                    a(title='Log out', accesskey='L', tabindex='2', href='/logout') Log out
+                    a(title='Log out', accesskey='L', tabindex='3', href='/logout') Log out
                 else
-                    a(title='Log in', accesskey='L', tabindex='2', href='/login') Log in
-                    a(title='Register', accesskey='R', tabindex='3', href='/register') Register
+                    a(title='Log in', accesskey='L', tabindex='3', href='/login') Log in
+                    a(title='Register', accesskey='R', tabindex='4', href='/register') Register
         block bodyContent
         footer
             p This is a Degree Project for the Bachelor's Degree in Software Engineering.

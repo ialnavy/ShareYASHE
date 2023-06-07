@@ -22,6 +22,8 @@ p, a {
 
 header > p:nth-of-type(3) {
     font-weight: bold;
+    font-size: 1.25rem;
+    text-decoration: underline overline;
 }
 
 main {

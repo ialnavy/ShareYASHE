@@ -1,11 +1,22 @@
 class PO_Render {
-    constructor(request, response, logicFactory, renderTemplate, title = 'ShareYASHE') {
+    static WEBSITE_NAME = 'ShareYASHE';
+    constructor(request, response, logicFactory, renderTemplate, title = PO_Render.WEBSITE_NAME) {
         this.request = request;
         this.response = response;
         this.logicFactory = logicFactory;
         this.renderTemplate = (new String(renderTemplate)).toString();
         this.title = (new String(title)).toString();
         this.message = null;
+    }
+
+    async render(message = null) {
+        this.message = message;
+        this.response.render(this.renderTemplate, await this.getRenderParameters());
+    }
+
+    async _getAdditionalRenderParameters(renderParameters) {
+        // This method may be overrided by subclasses to add more parameters to the view engine
+        return renderParameters;
     }
 
     async getRenderParameters() {
@@ -22,36 +33,28 @@ class PO_Render {
             let username = authLogic.getLoggedUsername();
             renderParameters['username'] = username;
             renderParameters['ownedSheets'] = await this.getOwnedSheets(username);
-            if (this.isSheetEditing())
-                renderParameters['isSheetEditing'] = true;
         }
 
-        return renderParameters;
+        return (await this._getAdditionalRenderParameters(renderParameters));
     }
 
     async getOwnedSheets(username) {
         let sheets = [];
-        let sheetsRepository = await this.logicFactory.forSheets();
-        if ((await sheetsRepository.countSheetsByUsername(username)) > 0) {
-            let sheetsCursor = await sheetsRepository.getSheetsByUsername(username);
-            while (await sheetsCursor.hasNext()) {
-                let persistentSheet = await sheetsCursor.next();
-                sheets.push({
-                    sheetId: persistentSheet._id.toString(),
-                    title: persistentSheet.title.toString()
-                });
-            }
+
+        let sheetsRepository = null;
+        try {
+            sheetsRepository = await this.logicFactory.forSheets();
+        } catch (error) {
+            return sheets;
         }
+
+        try {
+            sheets = await sheetsRepository.getSheetsByUsername(username);
+        } catch (error) {
+            return sheets;
+        }
+
         return sheets;
-    }
-
-    isSheetEditing() {
-        return false;
-    }
-
-    async render(message = null) {
-        this.message = message;
-        this.response.render(this.renderTemplate, await this.getRenderParameters());
     }
 
 }

@@ -18,17 +18,13 @@ class SheetsLogic {
         return AbstractRepository.forUsers(this.app, this.mongoClient);
     }
 
-    async createSheet(username) {
-        if ((await this.usersRepo.count({username: username})) === 0)
-            throw new Error('The given username does not exist.');
-
-        let i = this.sheetsRepo.count({owners: username});
-
-        return await this.sheetsRepo.insertOne({
-            title: 'Untitled sheet',
-            content: '',
-            owners: [username]
-        });
+    async createSheet(sheet) {
+        for (let iOwner in sheet.owners) {
+            let iUsername = sheet.owners[iOwner];
+            if ((await this.usersRepo.count({username: iUsername})) === 0)
+                throw new Error('The given username: \'' .concat(iUsername).concat('\' does not exist.'));
+        }
+        return await this.sheetsRepo.insertOne(sheet);
     }
 
     async countSheetsById(sheetId) {
@@ -58,7 +54,19 @@ class SheetsLogic {
             || username === '' || username.length === 0)
             throw new Error('An invalid username was given.');
 
-        return await this.sheetsRepo.findMany({owners: username});
+        let sheets = [];
+        if ((await this.sheetsRepo.count({owners: username})) > 0) {
+            let sheetsCursor = await this.sheetsRepo.findMany({owners: username});
+            while (await sheetsCursor.hasNext()) {
+                let persistentSheet = await sheetsCursor.next();
+                sheets.push({
+                    sheetId: persistentSheet._id.toString(),
+                    title: persistentSheet.title.toString()
+                });
+            }
+        }
+
+        return sheets;
     }
 }
 

@@ -33,5 +33,8 @@ module.exports = {
     }, forSheetRender: async function (req, res) {
         let SheetRender = (await import('./pageRender/SheetRender.mjs')).SheetRender;
         return new SheetRender(req, res, this);
+    }, forCreateSheetRender: async function (req, res) {
+        let CreateSheetRender = (await import('./pageRender/sheet/CreateSheetRender.mjs')).CreateSheetRender;
+        return new CreateSheetRender(req, res, this);
     }
 };

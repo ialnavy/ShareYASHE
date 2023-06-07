@@ -2,13 +2,13 @@ extends mainLayout
 
 block bodyContent
     aside
-        form(action='/createSheet')
-            button(type='submit') New sheet
         if ownedSheets
-            ul
-                each sheet in ownedSheets
-                    li
-                        a(href='/sheet/' + sheet.sheetId) #{sheet.title}
+            figure
+                figcaption Your sheets
+                ul
+                    each sheet in ownedSheets
+                        li
+                            a(href='/sheet/' + sheet.sheetId) #{sheet.title}
         else
             p You haven't any sheet yet.
     main

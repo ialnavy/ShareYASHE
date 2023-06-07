@@ -11,7 +11,7 @@ class AuthLogic {
     getLoggedUsername() {
         if (!this.isUserLogged(this.session))
             return null;
-        return this.session.username;
+        return (new String(this.session.username)).toString();
     }
 
     isUsernameValid(username) {
