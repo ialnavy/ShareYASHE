@@ -1,8 +1,8 @@
-import {AbstractRepository} from "../repositories/AbstractRepository.mjs";
+import {PersistenceFactory} from "../persistenceLayer/PersistenceFactory.mjs";
 
 class UsersLogic {
     constructor(app, mongoClient) {
-        this.repo = AbstractRepository.forUsers(app, mongoClient);
+        this.repo = PersistenceFactory.forUsers(app, mongoClient);
     }
 
     async createUser(user) {

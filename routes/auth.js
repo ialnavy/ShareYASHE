@@ -1,8 +1,8 @@
-module.exports = function (app, logicFactory) {
+module.exports = function (app, logicFactory, viewEngineFactory) {
 
     app.get('/register', async function (req, res) {
         /* Render logic */
-        let registerRenderObj = await logicFactory.forRegisterRender(req, res);
+        let registerRenderObj = await viewEngineFactory.forRegisterRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -17,7 +17,7 @@ module.exports = function (app, logicFactory) {
 
     app.post('/register', async function (req, res) {
         /* Render logic */
-        let registerRenderObj = await logicFactory.forRegisterRender(req, res);
+        let registerRenderObj = await viewEngineFactory.forRegisterRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -63,7 +63,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/login', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLoginRender(req, res);
+        let loginRenderObj = await viewEngineFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -78,7 +78,7 @@ module.exports = function (app, logicFactory) {
 
     app.post('/login', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLoginRender(req, res);
+        let loginRenderObj = await viewEngineFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);
@@ -115,7 +115,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/logout', async function (req, res) {
         /* Render logic */
-        let loginRenderObj = await logicFactory.forLoginRender(req, res);
+        let loginRenderObj = await viewEngineFactory.forLoginRender(req, res);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);

@@ -1,10 +1,10 @@
 const {ObjectId} = require("mongodb");
 
-module.exports = function (app, logicFactory) {
+module.exports = function (app, logicFactory, viewEngineFactory) {
 
     app.get('/createSheet', async function (req, res) {
         /* Render logic */
-        let createSheetRenderObj = await logicFactory.forCreateSheetRender(req, res, logicFactory);
+        let createSheetRenderObj = await viewEngineFactory.forCreateSheetRender(req, res, logicFactory);
         await createSheetRenderObj.render();
     });
 
@@ -14,7 +14,7 @@ module.exports = function (app, logicFactory) {
         let sheetsLogic = await logicFactory.forSheets();
 
         /* Render logic */
-        let createSheetRenderObj = await logicFactory.forCreateSheetRender(req, res, logicFactory);
+        let createSheetRenderObj = await viewEngineFactory.forCreateSheetRender(req, res, logicFactory);
 
         if (!authLogic.isUserLogged()) {
             await createSheetRenderObj.render('You cannot create a piece of sheet if you are not logged in.');
@@ -45,7 +45,7 @@ module.exports = function (app, logicFactory) {
 
     app.get('/sheet/:sheet_id', async function (req, res) {
         /* Render logic */
-        let sheetRenderObj = await logicFactory.forSheetRender(req, res, logicFactory);
+        let sheetRenderObj = await viewEngineFactory.forSheetRender(req, res, logicFactory);
 
         /* Data logic */
         let authLogic = await logicFactory.forAuth(req.session);

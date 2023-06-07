@@ -7,14 +7,6 @@ class AbstractRepository {
         this.collectionName = collectionName;
     }
 
-    static forUsers(app, mongoClient) {
-        return new AbstractRepository(app, mongoClient, "users");
-    }
-
-    static forSheets(app, mongoClient) {
-        return new AbstractRepository(app, mongoClient, "sheets");
-    }
-
     async findOne(filter, options) {
         try {
             let client = await this.mongoClient.connect(this.app.get('connectionStrings'));

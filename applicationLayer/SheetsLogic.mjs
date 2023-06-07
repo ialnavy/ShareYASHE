@@ -1,4 +1,4 @@
-import {AbstractRepository} from "../repositories/AbstractRepository.mjs";
+import {PersistenceFactory} from "../persistenceLayer/PersistenceFactory.mjs";
 
 class SheetsLogic {
     constructor(app, mongoClient, yjs, websocketProvider, codemirrorBinding, yashe) {
@@ -8,14 +8,8 @@ class SheetsLogic {
         this.websocketProvider = websocketProvider;
         this.codemirrorBinding = codemirrorBinding;
         this.yashe = yashe;
-    }
-
-    get sheetsRepo() {
-        return AbstractRepository.forSheets(this.app, this.mongoClient);
-    }
-
-    get usersRepo() {
-        return AbstractRepository.forUsers(this.app, this.mongoClient);
+        this.sheetsRepo = PersistenceFactory.forSheets(app, mongoClient);
+        this.usersRepo = PersistenceFactory.forUsers(app, mongoClient);
     }
 
     async createSheet(sheet) {

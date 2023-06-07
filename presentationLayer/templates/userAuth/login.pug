@@ -1,20 +1,16 @@
-extends mainLayout
+extends ../mainLayout
 
 block bodyContent
     main
-        h2 Create an account
-        form(action='/register', method='post')
+        h2 Log into your account
+        form(action='/login', method='post')
             p
                 label(for='fUsername') Username
             p
                 input(type='text', id='fUsername', name='username')
             p
-                label(for='fEmail') Email
-            p
-                input(type='email', id='fEmail', name='email')
-            p
                 label(for='fPassword') Password
             p
                 input(type='password', id='fPassword', name='password')
             p
-                input(type='submit' value='Register')
+                input(type='submit' value='Log in')
