@@ -21,25 +21,25 @@ class ShareYASHE_Client {
             '',
             ydoc
         );
-        let ytext = ydoc.getText('codemirror');
 
         this.editor = YASHE.fromTextArea(
             document.querySelector(ShareYASHE_Client.EDITOR_TEXTAREA_SELECTOR), {
                 lineNumbers: true
-            });
+        });
 
-        /*ytext.insert(0, 'PREFIX :       <http://example.org/>');
-        ytext.insert(1, 'PREFIX schema: <http://schema.org/>');
-        ytext.insert(2, 'PREFIX xsd:  <http://www.w3.org/2001/XMLSchema#>');
-        ytext.insert(3, '');
-        ytext.insert(4, ':User {');
-        ytext.insert(5, '  schema:name          xsd:string ;');
-        ytext.insert(6, '  schema:birthDate     xsd:date?  ;');
-        ytext.insert(7, '  schema:gender        [ schema:Male schema:Female ] OR xsd:string ;');
-        ytext.insert(8, '  schema:knows         IRI @:User*');
-        ytext.insert(9, '}');*/
+        let binding = new CodemirrorBinding(ydoc.getText('codemirror'), this.editor, provider.awareness);
 
-        let binding = new CodemirrorBinding(ytext, this.editor, provider.awareness);
+        ydoc.setValue("");
+        let message = "PREFIX :       \x3Chttp://example.org/\x3E\n";
+        message = message.concat("PREFIX schema: \x3Chttp://schema.org/\x3E\n");
+        message = message.concat("PREFIX xsd:  \x3Chttp://www.w3.org/2001/XMLSchema#\x3E\n");
+        message = message.concat("\n");
+        message = message.concat(":User {\n");
+        message = message.concat("  schema:birthDate     xsd:date?  ;\n");
+        message = message.concat("  schema:gender        [ schema:Male schema:Female ] OR xsd:string ;\n");
+        message = message.concat("  schema:knows         IRI @:User*\n");
+        message = message.concat("}\n");
+        ydoc.setValue(message);
 
         let connectBtn = document.querySelector(ShareYASHE_Client.EDITOR_BUTTON_SELECTOR);
         connectBtn.addEventListener('click', () => {
