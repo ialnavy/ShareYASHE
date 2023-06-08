@@ -15,6 +15,8 @@ class AuthLogic {
     }
 
     isUsernameValid(username) {
+        if ((new String(username)).toString().toLowerCase() === "anonymous")
+            return false;
         return (!(username === null || typeof (username) === 'undefined'
             || username === '' || username.length < 3));
     }

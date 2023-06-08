@@ -290,4 +290,5 @@ exports.setupWSConnection = (conn, req, {docName = req.url.slice(1).split('?')[0
             send(doc, conn, encoding.toUint8Array(encoder))
         }
     }
+    return doc;
 }

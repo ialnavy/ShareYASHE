@@ -5,6 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const WebSocket = require('ws');
+const Y = require('yjs');
 const setupWSConnection = require('./wsServer/utils.js').setupWSConnection;
 
 const app = express();
@@ -71,7 +72,24 @@ const server = http.createServer((request, response) => {
 });
 
 const wss = new WebSocket.Server({noServer: true});
-wss.on('connection', setupWSConnection);
+wss.on('connection', (conn, req, options) => {
+    conn.userName = "Anonymous ".concat(Math.random());
+    // Invoke the original setupWSConnection
+    let doc = setupWSConnection(conn, req, options);
+    console.log("Connection set");
+
+    // Send the Y.Doc instance to the client
+    conn.send(JSON.stringify({ type: 'yDoc', yDoc: doc.toJSON() }));
+
+    // Add the update listener to the Y document
+    doc.on('update', (update, origin) => {
+        // Grant that listener is being executed on server-side
+        console.log("DOC CONTENT");
+        console.log("-----------");
+        console.log(doc.getText().toString());
+        console.log("-----------");
+    });
+});
 
 server.on('upgrade', (request, socket, head) => {
     // You may check auth of request here..

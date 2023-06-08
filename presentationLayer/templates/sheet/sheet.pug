@@ -13,6 +13,11 @@ block additionalHeadElementContent
 
     // Client-side JavaScript: ShareYASHE implements collaborativity
     script(type='module', src='/scripts/shareyashe.js')
+
+    // Username is passed to the client-side JavaScript which connects to the WebSockets server
+    script(type='text/javascript')
+        if username
+            | const shareYASHEusernameGotFromViewEngine = (new String("#{username}")).toString();
 block mainElementContent
     h2=title
     textarea

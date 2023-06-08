@@ -1,14 +1,17 @@
 import * as Y from 'https://esm.sh/yjs@13';
 import {WebsocketProvider} from './lib/y-websocket.js';
 import {CodemirrorBinding} from './lib/y-codemirror.js';
+import {RandomContrastColour} from "./util/RandomContrastColour.mjs";
 
 // Not an ESM Module (must be imported in the HTML <head>):
 // import YASHE from 'https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.bundled.min.js';
 
 class ShareYASHE_Client {
     static EDITOR_TEXTAREA_SELECTOR = 'body > main > textarea:first-of-type';
+    static SHAREYASHE_USERNAME_SCRIPT_SELECTOR = 'head > script:last-of-type';
 
     constructor() {
+        this.username = "";
         this.yDoc = new Y.Doc();
         this.yasheEditor = null;
         this.websocketProvider = null;
@@ -16,41 +19,61 @@ class ShareYASHE_Client {
         document.addEventListener("DOMContentLoaded", this.createEditor.bind(this));
     }
 
-    get yText() {
-        return this.yDoc.getText();
-    }
-
+    /**
+     * This method creates and sets up the ShareYASHE editor after DOM content is fully loaded.
+     *
+     * @returns {Promise<void>}
+     */
     async createEditor() {
+        // Retrieve username from dynamically rendered script & remove it from the HTML DOM
+        try {
+            this.username = shareYASHEusernameGotFromViewEngine;
+        } catch (error) {
+            this.username = "Anonymous";
+        }
+        document.querySelector(ShareYASHE_Client.SHAREYASHE_USERNAME_SCRIPT_SELECTOR).remove();
+
+        // Establish WebSocket connection to the doc room
         this.websocketProvider = new WebsocketProvider(
             'ws://127.0.0.1:1234',
-            '',
+            this.docID,
             this.yDoc
         );
 
+        // The WebSockets server updates the yDoc so it can be shared by several clients
+        this.websocketProvider.on('message', ((event) => {
+            let data = JSON.parse(event.data);
+            if (data.type === 'yDoc') {
+                this.yDoc = Y.Doc.fromJSON(data.yDoc);
+            }
+        }).bind(this));
+
+        // A YASHE editor, which is running over CodeMirror, is created.
+        // Then, it is binded to the WebSocket Provider.
+        // This synchronises the editor with the server yDoc.
+        // Thus, with the editors of another clients.
+        // We can also customise the user awareness.
         this.yasheEditor = YASHE.fromTextArea(
             document.querySelector(ShareYASHE_Client.EDITOR_TEXTAREA_SELECTOR), {
                 lineNumbers: true
         });
-
         this.codemirrorBinding = new CodemirrorBinding(this.yText, this.yasheEditor, this.websocketProvider.awareness);
+        // User awareness options
+        this.codemirrorBinding.awareness.setLocalStateField('user', {
+            // Background colour
+            color: RandomContrastColour.getRandomContrastColor('#000000'),
+            // Displayed username
+            name: this.username
+        });
 
+        // The event listeners of the WebsocketProvider can be binded to functions of this class
         this.websocketProvider.on('status', this.onStatus.bind(this));
         this.websocketProvider.on('sync', this.onSync.bind(this));
         this.websocketProvider.on('destroy', this.onDestroy.bind(this));
         this.websocketProvider.on('error', this.onError.bind(this));
 
-        this.yasheEditor.setValue("");
-        let message = "PREFIX :       \x3Chttp://example.org/\x3E\n";
-        message = message.concat("PREFIX schema: \x3Chttp://schema.org/\x3E\n");
-        message = message.concat("PREFIX xsd:  \x3Chttp://www.w3.org/2001/XMLSchema#\x3E\n");
-        message = message.concat("\n");
-        message = message.concat(":User {\n");
-        message = message.concat("  schema:birthDate     xsd:date?  ;\n");
-        message = message.concat("  schema:gender        [ schema:Male schema:Female ] OR xsd:string ;\n");
-        message = message.concat("  schema:knows         IRI @:User*\n");
-        message = message.concat("}\n");
-        this.yasheEditor.setValue(message);
-
+        // These attributes must be exported to the 'example' variable,
+        // so libraries can access them.
         let provider = this.websocketProvider;
         let binding = this.codemirrorBinding;
         let ydoc = this.yDoc;
@@ -58,6 +81,8 @@ class ShareYASHE_Client {
         // @ts-ignore
         window.example = {provider, ydoc, ytext, binding, Y};
     }
+
+    /* WebsocketProvider EVENT LISTENERS */
 
     /**
      * Event listener for provider's "status" event
@@ -100,6 +125,8 @@ class ShareYASHE_Client {
      * @returns {Promise<void>}
      */
     async onDestroy() {
+        if (this.websocketProvider != undefined && this.websocketProvider !== null)
+            this.websocketProvider.disconnect();
         // Perform cleanup tasks or any necessary actions upon provider destruction
         console.log('WebsocketProvider has been destroyed');
     }
@@ -113,6 +140,23 @@ class ShareYASHE_Client {
     async onError(error) {
         console.error('WebSocket connection error:', error);
     }
+
+    /* GETTER METHODS */
+
+    get docID() {
+        let currentURL = new URL((new String(window.location.href)).toString());
+        let absolutePathName = (new String(currentURL.pathname)).toString();
+        let absolutePathNameSubstrings = absolutePathName.split("/");
+        return (new String( (new String( //
+            absolutePathNameSubstrings[absolutePathNameSubstrings.length - 1] //
+                )).toString().split(".")[0]//
+        )).toString();
+    }
+
+    get yText() {
+        return this.yDoc.getText();
+    }
+
 }
 
 new ShareYASHE_Client();
