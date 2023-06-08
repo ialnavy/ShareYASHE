@@ -1,20 +1,19 @@
 extends ../mainLayout
 
-block bodyContent
-    main
-        h2 Create an account
-        form(action='/register', method='post')
-            p
-                label(for='fUsername') Username
-            p
-                input(type='text', id='fUsername', name='username')
-            p
-                label(for='fEmail') Email
-            p
-                input(type='email', id='fEmail', name='email')
-            p
-                label(for='fPassword') Password
-            p
-                input(type='password', id='fPassword', name='password')
-            p
-                input(type='submit' value='Register')
+block mainElementContent
+    h2 Create an account
+    form(action='/register', method='post')
+        p
+            label(for='fUsername') Username
+        p
+            input(type='text', id='fUsername', name='username')
+        p
+            label(for='fEmail') Email
+        p
+            input(type='email', id='fEmail', name='email')
+        p
+            label(for='fPassword') Password
+        p
+            input(type='password', id='fPassword', name='password')
+        p
+            input(type='submit' value='Register')

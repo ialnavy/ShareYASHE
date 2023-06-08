@@ -39,7 +39,18 @@ html(lang='en')
                 else
                     a(title='Log in', accesskey='L', tabindex='3', href='/login') Log in
                     a(title='Register', accesskey='R', tabindex='4', href='/register') Register
-        block bodyContent
+        aside
+            if username && ownedSheets && ownedSheets.length > 0
+                figure
+                    figcaption Your sheets
+                    ul
+                        each sheet in ownedSheets
+                            li
+                                a(href='/sheet/' + sheet.sheetId) #{sheet.title}
+            else
+                p You do not have any sheet yet.
+        main
+            block mainElementContent
         footer
             p This is a Degree Project for the Bachelor's Degree in Software Engineering.
             a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
