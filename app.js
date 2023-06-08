@@ -73,7 +73,6 @@ const server = http.createServer((request, response) => {
 
 const wss = new WebSocket.Server({noServer: true});
 wss.on('connection', (conn, req, options) => {
-    conn.userName = "Anonymous ".concat(Math.random());
     // Invoke the original setupWSConnection
     let doc = setupWSConnection(conn, req, options);
     console.log("Connection set");
