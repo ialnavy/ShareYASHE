@@ -1,5 +1,7 @@
 extends ../mainLayout
 
+block additionalHeadElementContent
+    // This view does not require any additional script or stylesheet
 block mainElementContent
     h2 Log into your account
     form(action='/login', method='post')
