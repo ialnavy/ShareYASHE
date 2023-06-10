@@ -1,3 +1,5 @@
+const {ObjectId} = require("mongodb");
+
 module.exports = {
 
     mongoClient: null,
@@ -11,9 +13,9 @@ module.exports = {
     forAuth: async function (session) {
         let AuthLogic = (await import('./AuthLogic.mjs')).AuthLogic;
         return new AuthLogic(session);
-    }, forSheets: async function () {
-        let SheetsLogic = (await import('./SheetsLogic.mjs')).SheetsLogic;
-        return new SheetsLogic(this.app, this.mongoClient);
+    }, forShExDocs: async function () {
+        let ShExDocsLogic = (await import('./ShExDocsLogic.mjs')).ShExDocsLogic;
+        return new ShExDocsLogic(this.app, this.mongoClient);
     }, forUsers: async function () {
         let UsersLogic = (await import('./UsersLogic.mjs')).UsersLogic;
         return new UsersLogic(this.app, this.mongoClient);

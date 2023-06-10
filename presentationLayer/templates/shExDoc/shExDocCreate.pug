@@ -1,0 +1,15 @@
+extends ../mainLayout
+
+block additionalHeadElementContent
+    // This view does not require any additional script or stylesheet
+block mainElementContent
+    h2 Create a shareable ShEx document
+    form(action='/createDoc', method='post')
+        p
+            label(for='fTitle') Title
+        p
+            input(type='text', id='fTitle', name='title', required)
+        p
+            input(type='submit' value='Create ShEx doc')
+        p
+            input(type='reset' value='Clear this form')

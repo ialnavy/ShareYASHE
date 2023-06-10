@@ -32,29 +32,29 @@ class PO_Render {
         if (authLogic.isUserLogged()) {
             let username = authLogic.getLoggedUsername();
             renderParameters['username'] = username;
-            renderParameters['ownedSheets'] = await this.getOwnedSheets(username);
+            renderParameters['ownedShExDocs'] = await this.getOwnedShExDocs(username);
         }
 
         return (await this._getAdditionalRenderParameters(renderParameters));
     }
 
-    async getOwnedSheets(username) {
-        let sheets = [];
+    async getOwnedShExDocs(username) {
+        let shExDocs = [];
 
-        let sheetsRepository = null;
+        let shExDocsRepository = null;
         try {
-            sheetsRepository = await this.logicFactory.forSheets();
+            shExDocsRepository = await this.logicFactory.forShExDocs();
         } catch (error) {
-            return sheets;
+            return shExDocs;
         }
 
         try {
-            sheets = await sheetsRepository.getSheetsByUsername(username);
+            shExDocs = await shExDocsRepository.getShExDocsByOwner(username);
         } catch (error) {
-            return sheets;
+            return shExDocs;
         }
 
-        return sheets;
+        return shExDocs;
     }
 
 }

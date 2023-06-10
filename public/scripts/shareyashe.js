@@ -17,6 +17,7 @@ class ShareYASHE_Client {
         this.websocketProvider = null;
         this.codemirrorBinding = null;
         document.addEventListener("DOMContentLoaded", this.createEditor.bind(this));
+        window.addEventListener("beforeunload", this.disconnectEditor.bind(this));
     }
 
     /**
@@ -82,6 +83,16 @@ class ShareYASHE_Client {
         window.example = {provider, ydoc, ytext, binding, Y};
     }
 
+    /**
+     * This method disconnects the WebSocket when the window is closed.
+     *
+     * @returns {Promise<void>}
+     */
+    async disconnectEditor() {
+        if (this.websocketProvider != undefined && this.websocketProvider !== null)
+            this.websocketProvider.disconnect();
+    }
+
     /* WebsocketProvider EVENT LISTENERS */
 
     /**
@@ -93,10 +104,10 @@ class ShareYASHE_Client {
     async onStatus(event) {
         if (event.status === 'connecting') {
             // Starting connection
-            console.log('connecting to room "${roomName}"');
+            console.log('Connecting to room "'.concat(this.docID).concat('"'));
         } else if (event.status === 'connected') {
             // Start collaborating in the room
-            console.log('Connected to room "${roomName}"');
+            console.log('Connected to room "'.concat(this.docID).concat('"'));
         } else if (event.status === 'disconnected') {
             // Handle disconnection
             console.log('Disconnected from the WebSocket server');
@@ -125,8 +136,6 @@ class ShareYASHE_Client {
      * @returns {Promise<void>}
      */
     async onDestroy() {
-        if (this.websocketProvider != undefined && this.websocketProvider !== null)
-            this.websocketProvider.disconnect();
         // Perform cleanup tasks or any necessary actions upon provider destruction
         console.log('WebsocketProvider has been destroyed');
     }

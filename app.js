@@ -4,13 +4,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const {MongoClient} = require("mongodb");
+const {MongodbPersistence} = require("y-mongodb-provider");
 const WebSocket = require('ws');
-const Y = require('yjs');
-const setupWSConnection = require('./wsServer/utils.js').setupWSConnection;
+const {setPersistence, setupWSConnection} = require("./wsServer/utils");
+const Y = require("yjs");
 
 const app = express();
 
-const {MongoClient} = require("mongodb");
 app.set('connectionStrings', "mongodb://127.0.0.1:27017");
 
 const crypto = require('crypto');
@@ -37,11 +38,12 @@ const logicFactory = require("./applicationLayer/logicFactory.js");
 logicFactory.init(app, MongoClient);
 
 const viewEngineFactory = require("./presentationLayer/viewEngineFactory.js");
+
 viewEngineFactory.init(app, MongoClient, logicFactory);
 
 require('./routes/auth.js')(app, logicFactory, viewEngineFactory);
 require('./routes/index.js')(app, logicFactory, viewEngineFactory);
-require('./routes/sheets.js')(app, logicFactory, viewEngineFactory);
+require('./routes/shExDocs.js')(app, logicFactory, viewEngineFactory);
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -71,35 +73,56 @@ const server = http.createServer((request, response) => {
     response.end('okay');
 });
 
+const mdb = new MongodbPersistence(app.get("connectionStrings"), {
+    collectionName: "transactions",
+    flushSize: 100,
+    multipleCollections: true
+});
+
+setPersistence({
+    bindState: async (docName, ydoc) => {
+        // Here you listen to granular document updates and store them in the database
+        // You don't have to do this, but it ensures that you don't lose content when the server crashes
+        // See https://github.com/yjs/yjs#Document-Updates for documentation on how to encode
+        // document updates
+
+        // official default code from: https://github.com/yjs/y-websocket/blob/37887badc1f00326855a29fc6b9197745866c3aa/bin/utils.js#L36
+        const persistedYdoc = await mdb.getYDoc(docName);
+        const newUpdates = Y.encodeStateAsUpdate(ydoc);
+        await mdb.storeUpdate(docName, newUpdates);
+        Y.applyUpdate(ydoc, Y.encodeStateAsUpdate(persistedYdoc));
+        ydoc.on('update', async update => {
+            await mdb.storeUpdate(docName, update);
+        })
+    },
+    writeState: async (docName, ydoc) => {
+        // This is called when all connections to the document are closed.
+        // In the future, this method might also be called in intervals or after a certain number of updates.
+        return new Promise(resolve => {
+            // When the returned Promise resolves, the document will be destroyed.
+            // So make sure that the document really has been written to the database.
+            resolve();
+        })
+    }
+})
 const wss = new WebSocket.Server({noServer: true});
-wss.on('connection', (conn, req, options) => {
+wss.on('connection', async (conn, req, options) => {
     // Invoke the original setupWSConnection
-    let doc = setupWSConnection(conn, req, options);
-    console.log("Connection set");
+    let yDoc = setupWSConnection(conn, req, options);
+//  yDoc.on('update', (update) => {
+//      console.log(yDoc.getText().toString().concat("\n\n"));
+//  });
 
     // Send the Y.Doc instance to the client
-    conn.send(JSON.stringify({ type: 'yDoc', yDoc: doc.toJSON() }));
+    conn.send(JSON.stringify({ type: 'yDoc', yDoc: yDoc.toJSON() }));
 
-    // Add the update listener to the Y document
-    doc.on('update', (update, origin) => {
-        // Grant that listener is being executed on server-side
-        console.log("DOC CONTENT");
-        console.log("-----------");
-        console.log(doc.getText().toString());
-        console.log("-----------");
-    });
+    console.log("Connection set");
 });
 
 server.on('upgrade', (request, socket, head) => {
-    // You may check auth of request here..
-    // See https://github.com/websockets/ws#client-authentication
-    /**
-     * @param {any} ws
-     */
-    const handleAuth = ws => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
         wss.emit('connection', ws, request);
-    }
-    wss.handleUpgrade(request, socket, head, handleAuth);
+    });
 });
 
 server.listen(port, host, () => {

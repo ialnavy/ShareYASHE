@@ -18,11 +18,11 @@ module.exports = {
     }, forLoginRender: async function (req, res) {
         let LoginRender = (await import('../presentationLayer/viewEngine/userAuth/LoginRender.mjs')).LoginRender;
         return new LoginRender(req, res, this.logicFactory);
-    }, forSheetRender: async function (req, res) {
-        let SheetRender = (await import('../presentationLayer/viewEngine/sheet/SheetRender.mjs')).SheetRender;
-        return new SheetRender(req, res, this.logicFactory);
-    }, forCreateSheetRender: async function (req, res) {
-        let CreateSheetRender = (await import('../presentationLayer/viewEngine/sheet/CreateSheetRender.mjs')).CreateSheetRender;
-        return new CreateSheetRender(req, res, this.logicFactory);
+    }, forShExDocRender: async function (req, res) {
+        let ShExDocRender = (await import('./viewEngine/shExDoc/ShExDocRender.mjs')).ShExDocRender;
+        return new ShExDocRender(req, res, this.logicFactory);
+    }, forShExDocCreateRender: async function (req, res) {
+        let ShExDocCreateRender = (await import('../presentationLayer/viewEngine/shExDoc/ShExDocCreateRender.mjs')).ShExDocCreateRender;
+        return new ShExDocCreateRender(req, res, this.logicFactory);
     }
 };

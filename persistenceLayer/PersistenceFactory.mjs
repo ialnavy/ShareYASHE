@@ -1,5 +1,5 @@
 import {UserRepository} from "./entities/UserRepository.mjs";
-import {SheetRepository} from "./entities/SheetRepository.mjs";
+import {ShExDocRepository} from "./entities/ShExDocRepository.mjs";
 
 class PersistenceFactory {
 
@@ -7,8 +7,8 @@ class PersistenceFactory {
         return new UserRepository(app, mongoClient);
     }
 
-    static forSheets(app, mongoClient) {
-        return new SheetRepository(app, mongoClient);
+    static forShExDocs(app, mongoClient) {
+        return new ShExDocRepository(app, mongoClient);
     }
 
 }
