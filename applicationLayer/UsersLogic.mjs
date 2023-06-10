@@ -28,6 +28,7 @@ class UsersLogic {
 
         return await this.repo.count({email: email});
     }
+
 }
 
 export {UsersLogic};

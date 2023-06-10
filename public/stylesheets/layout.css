@@ -6,19 +6,21 @@ body {
         'aside footer footer';
     grid-template-columns: 0.35fr 1fr 1fr;
     gap: 0.25em;
+    word-wrap: break-word
 }
 header {
     grid-area: header;
 }
 main {
     grid-area: main;
-    height: 65vh;
 }
 aside {
     grid-area: aside;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 footer {
     grid-area: footer;
 }
+

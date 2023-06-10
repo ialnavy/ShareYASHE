@@ -91,11 +91,11 @@ module.exports = function (app, logicFactory, viewEngineFactory) {
 
         // Perform task
         try {
-            if (usersLogic.countUsersByUsername(req.body.username) === 0) {
+            if (await usersLogic.countUsersByUsername(req.body.username) === 0) {
                 loginRenderObj.render('There is no such username registered.');
                 return;
             }
-            let user = usersLogic.findUser({
+            let user = await usersLogic.findUser({
                 username: req.body.username,
                 password: authLogic.cipherPassword(req.body.password, app)
             });
@@ -109,7 +109,7 @@ module.exports = function (app, logicFactory, viewEngineFactory) {
             res.redirect('/');
         } catch (error) {
             req.session.username = null;
-            loginRenderObj.render('An error happened while the user was being logged in.');
+            loginRenderObj.render(error.message.toString());
         }
     });
 

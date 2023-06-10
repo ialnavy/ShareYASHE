@@ -15,7 +15,7 @@ module.exports = {
         return new AuthLogic(session);
     }, forShExDocs: async function () {
         let ShExDocsLogic = (await import('./ShExDocsLogic.mjs')).ShExDocsLogic;
-        return new ShExDocsLogic(this.app, this.mongoClient);
+        return new ShExDocsLogic(this.app, this.mongoClient, ObjectId);
     }, forUsers: async function () {
         let UsersLogic = (await import('./UsersLogic.mjs')).UsersLogic;
         return new UsersLogic(this.app, this.mongoClient);

@@ -4,7 +4,14 @@ module.exports = function (app, logicFactory, viewEngineFactory) {
 
     app.get('/createDoc', async function (req, res) {
         /* Render logic */
+        let authLogic = await logicFactory.forAuth(req.session);
         let renderObj = await viewEngineFactory.forShExDocCreateRender(req, res, logicFactory);
+
+        if (!authLogic.isUserLogged()) {
+            await renderObj.render('You cannot create a shareable ShEx document if you are not logged in.');
+            return;
+        }
+
         await renderObj.render();
     });
 

@@ -1,37 +1,33 @@
 body {
-    font-family: "Lato", sans-serif;
-    color: white;
-
-    background-image: url('../images/wallpaper.png');
-    background-attachment: fixed;
-    background-size: cover;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: black;
 }
 
-header, aside, footer, nav > form {
-    background-color: #585656;
-    border: 0.2vw solid rgba(255, 255, 255, 0.125);
+header, main, aside, footer {
+    background-color: #2A5A95;
+    color: #FFFFFF;
+
+    border: solid 1.25px #e0e0e0;
+    box-shadow: 0 0.75px 1px #c0c0c0;
+    border-radius: 6px;
+
+    box-sizing: border-box;
 }
 
-a {
-    text-shadow: 0 0 0.3vw white, 0 0 0.2vw white;
+header > *, header > nav > *,
+main > *, aside > *, aside > ul > *,
+footer > * {
+    margin: 0.5em;
+    padding: 0.2em;
 }
 
-p, a {
-    margin: 0.2vw;
-}
-
-header > p:nth-of-type(3) {
+header > p:nth-of-type(2) {
     font-weight: bold;
     font-size: 1.25rem;
     text-decoration: underline overline;
 }
 
-main {
-    background-color: rgba(255, 255, 255, 0.3);
-    border: 0.2vw solid rgba(255, 255, 255, 0.125);
-}
-
-input, button {
+a, input, button {
     border: solid 1.25px #e0e0e0;
     box-shadow: 0 0.75px 1px #c0c0c0;
     border-radius: 6px;
@@ -40,11 +36,17 @@ input, button {
     box-sizing: border-box;
 }
 
-input:hover, button {
+a:hover, input:hover, button {
     background-color: #f4f4f4;
 }
 
-input:active, button {
+a:active, input:active, button {
     box-shadow: none;
     opacity: .875;
+}
+
+ul {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
 }

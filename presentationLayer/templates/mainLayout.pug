@@ -26,7 +26,6 @@ html(lang='en')
     body
         header
             h1=title
-            p Collaborative Cloud-based ShEx Editor
             if username
                 p Welcome, #{username}!
             else
@@ -54,7 +53,11 @@ html(lang='en')
         main
             block mainElementContent
         footer
-            p This is a Degree Project for the Bachelor's Degree in Software Engineering.
-            a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
-            p Made by Iván Álvarez López
-            a(href='mailto:ial.navy@protonmail.ch') ial.navy@protonmail.ch
+            p This is a Degree Project for the Bachelor's Degree in Software Engineering (see#{' '}
+                a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
+                | ).
+            p Made by Iván Álvarez López (
+                a(href='mailto:UO264862@uniovi.es') UO264862@uniovi.es
+                | ). Contact me through my#{' '}
+                a(href='https://linktr.ee/ialnavy') link tree
+                |.

@@ -1,8 +1,9 @@
 import {PersistenceFactory} from "../persistenceLayer/PersistenceFactory.mjs";
 
 class ShExDocsLogic {
-    constructor(app, mongoClient) {
+    constructor(app, mongoClient, ObjectId) {
         this.app = app;
+        this.ObjectId = ObjectId;
         this.shExDocsRepo = PersistenceFactory.forShExDocs(app, mongoClient);
         this.usersRepo = PersistenceFactory.forUsers(app, mongoClient);
     }
@@ -43,6 +44,18 @@ class ShExDocsLogic {
         }
 
         return shExDocs;
+    }
+
+    async findById(shExDocId) {
+        if (shExDocId === null || typeof (shExDocId) === 'undefined'
+            || shExDocId === '' || shExDocId.length === 0)
+            throw new Error('An invalid ShEx doc ID was given.');
+
+        let objShExDocId = new this.ObjectId(shExDocId);
+
+        if ((await this.shExDocsRepo.count({_id: objShExDocId})) === 0)
+            return null;
+        return await this.shExDocsRepo.findOne({_id: objShExDocId});
     }
 
 }
