@@ -9,7 +9,6 @@ const {MongodbPersistence} = require("y-mongodb-provider");
 const WebSocket = require('ws');
 const {setPersistence, setupWSConnection} = require("./wsServer/utils");
 const Y = require("yjs");
-require('dotenv').config();
 
 const app = express();
 

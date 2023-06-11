@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     container: node:16
     steps:
-      - run: apt install openssh-server openssh-client
-      - run: ufw allow 22
       - run: node --version
       - run: npm --version
       - uses: actions/checkout@v3
