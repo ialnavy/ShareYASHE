@@ -2,7 +2,6 @@
   "name": "ShareYASHE",
   "version": "1.0.0",
   "scripts": {
-    "build": "ncc build ./bin/www.js -o dist",
     "start": "node ./bin/www"
   },
   "dependencies": {
