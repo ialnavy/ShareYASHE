@@ -9,14 +9,14 @@ const {MongodbPersistence} = require("y-mongodb-provider");
 const WebSocket = require('ws');
 const {setPersistence, setupWSConnection} = require("./wsServer/utils");
 const Y = require("yjs");
-const core = require("@actions/core");
+require('dotenv').config();
 
 const app = express();
 
-app.set('connectionStrings', core.getInput("SHAREYASHE_MONGODB"));
+app.set('connectionStrings', process.env.SHAREYASHE_MONGODB);
 
 const crypto = require('crypto');
-app.set('key', core.getInput("SHAREYASHE_CRYPTO_KEY"));
+app.set('key', process.env.SHAREYASHE_CRYPTO_KEY);
 app.set('crypto', crypto);
 
 const bodyParser = require('body-parser');
