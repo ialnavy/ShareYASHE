@@ -1,0 +1,15 @@
+name: 'ShareYASHE'
+description: 'Collaborative Cloud-based ShEx Editor'
+author: 'Iván Álvarez López'
+
+inputs:
+  SHAREYASHE_CRYPTO_KEY:
+    description: 'Key for encrypting passwords'
+    required: true
+  SHAREYASHE_MONGODB:
+    description: 'Link to MongoDB'
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'bin/www.js'
