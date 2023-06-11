@@ -126,7 +126,7 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 server.listen(port, host, () => {
-    console.log("Running WebSocket Server at host ".concat(host).concat(" on port ").concat(port));
+    console.log("Running WebSocket Server on port ".concat(port));
 });
 
 /*
