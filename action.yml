@@ -9,6 +9,9 @@ inputs:
   SHAREYASHE_MONGODB:
     description: 'Link to MongoDB'
     required: true
+  SHAREYASHE_LOGROCKET_KEY:
+    description: 'Key for LogRocket deployment'
+    required: true
 
 runs:
   using: 'node16'

@@ -19,3 +19,4 @@ jobs:
         env:
           SHAREYASHE_CRYPTO_KEY: ${{ secrets.SHAREYASHE_CRYPTO_KEY }}
           SHAREYASHE_MONGODB: ${{ secrets.SHAREYASHE_MONGODB }}
+          SHAREYASHE_LOGROCKET_KEY: ${{ secrets.SHAREYASHE_LOGROCKET_KEY }}
