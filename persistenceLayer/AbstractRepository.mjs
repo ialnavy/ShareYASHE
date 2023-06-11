@@ -72,6 +72,17 @@ class AbstractRepository {
             throw (error);
         }
     }
+
+    async deleteOne(filter, options) {
+        try {
+            let client = await this.mongoClient.connect(this.app.get('connectionStrings'));
+            let database = client.db(AbstractRepository.clientDB);
+            let collection = database.collection(this.collectionName);
+            return await collection.deleteOne(filter, options);
+        } catch (error) {
+            throw (error);
+        }
+    }
 }
 
 export {AbstractRepository};

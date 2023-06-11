@@ -58,6 +58,35 @@ class ShExDocsLogic {
         return await this.shExDocsRepo.findOne({_id: objShExDocId});
     }
 
+    async deleteById(shExDocId) {
+        if (shExDocId === null || typeof (shExDocId) === 'undefined'
+            || shExDocId === '' || shExDocId.length === 0)
+            throw new Error('An invalid ShEx doc ID was given.');
+
+        let objShExDocId = new this.ObjectId(shExDocId);
+
+        if ((await this.shExDocsRepo.count({_id: objShExDocId})) === 0)
+            return;
+        await this.shExDocsRepo.deleteOne({_id: objShExDocId});
+    }
+
+    async addOwner(shExDocId, newOwner) {
+        let objShExDocId = null;
+        try {
+            objShExDocId = new this.ObjectId(objShExDocId);
+        } catch (error) {
+            throw new Error('The given ShEx doc ID: \'' .concat(shExDocId.toString()).concat('\' is not valid.'));
+        }
+        if ((await this.usersRepo.count({username: newOwner})) === 0)
+            throw new Error('The given username: \'' .concat(newOwner).concat('\' does not exist.'));
+        if ((await this.shExDocsRepo.count({_id: objShExDocId})) === 0)
+            throw new Error('The given ShEx doc ID: \'' .concat(objShExDocId.toString()).concat('\' does not match any existing doc.'));
+        let shExDoc = await this.shExDocsRepo.findOne({_id: objShExDocId});
+        let docOwners = shExDoc.owners;
+        docOwners.push(newOwner);
+        await this.shExDocsRepo.updateOne({_id: objShExDocId}, {owners: docOwners});
+    }
+
 }
 
 export {ShExDocsLogic};

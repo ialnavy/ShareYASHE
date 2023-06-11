@@ -67,4 +67,76 @@ module.exports = function (app, logicFactory, viewEngineFactory) {
 
         await renderObj.render();
     });
+
+    app.get('/deleteDoc/:shExDocId', async function (req, res) {
+        /* Render logic */
+        let renderObj = await viewEngineFactory.forShExDocRender(req, res, logicFactory);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+        let shexDocsLogic = await logicFactory.forShExDocs();
+
+        let givenShExDocId = req.params.shExDocId.toString();
+        let shExDoc = null;
+        try {
+            shExDoc = await shexDocsLogic.findById(givenShExDocId);
+        } catch (error) {
+            await renderObj.render(error.message);
+            return;
+        }
+        if (shExDoc === null) {
+            await renderObj.render("There is no ShEx doc with the given ID");
+            return;
+        }
+
+        if (!authLogic.isUserLogged() || !shExDoc.owners.includes(authLogic.getLoggedUsername().toString())) {
+            await renderObj.render("You cannot delete this ShEx doc because you do not own it");
+            return;
+        }
+
+        await shexDocsLogic.deleteById(givenShExDocId);
+
+        res.redirect('/');
+    });
+
+    app.post('/shareDoc/:shExDocId', async function (req, res) {
+        /* Render logic */
+        let renderObj = await viewEngineFactory.forShExDocRender(req, res, logicFactory);
+
+        /* Data logic */
+        let authLogic = await logicFactory.forAuth(req.session);
+        let shexDocsLogic = await logicFactory.forShExDocs();
+
+        let givenShExDocId = req.params.shExDocId.toString();
+        let shExDoc = null;
+        try {
+            shExDoc = await shexDocsLogic.findById(givenShExDocId);
+        } catch (error) {
+            await renderObj.render(error.message);
+            return;
+        }
+        if (shExDoc === null) {
+            await renderObj.render("There is no ShEx doc with the given ID");
+            return;
+        }
+
+        if (!authLogic.isUserLogged() || !shExDoc.owners.includes(authLogic.getLoggedUsername().toString())) {
+            await renderObj.render("You cannot share this ShEx doc because you do not own it");
+            return;
+        }
+
+        // Perform task
+        try {
+            if (typeof(req.body.newOwner) == "undefined" || req.body.newOwner === null || req.body.newOwner === '') {
+                await renderObj.render('Cannot share a ShEx document with an undefined user');
+                return;
+            }
+            await shexDocsLogic.addOwner(givenShExDocId, req.body.newOwner.toString());
+        } catch (error) {
+            await renderObj.render(error.message);
+            return;
+        }
+
+        await renderObj.render();
+    });
 }
