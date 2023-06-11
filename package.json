@@ -1,7 +1,6 @@
 {
   "name": "ShareYASHE",
   "version": "1.0.0",
-  "homepage": "https://ialnavy.github.io/ShareYASHE/",
   "scripts": {
     "start": "node bin/www",
     "predeploy": "npm run build",
@@ -21,7 +20,6 @@
     "http": "^0.0.1-security",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.0",
-    "logrocket": "^4.0.3",
     "mongodb": "^5.1.0",
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
@@ -34,8 +32,5 @@
     "y-websockets-server": "^9.2.1",
     "yashe": "^1.3.22",
     "yjs": "^13.6.2"
-  },
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
   }
 }
