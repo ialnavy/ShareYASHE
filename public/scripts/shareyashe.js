@@ -36,7 +36,7 @@ class ShareYASHE_Client {
 
         // Establish WebSocket connection to the doc room
         this.websocketProvider = new WebsocketProvider(
-            'ws://127.0.0.1:1234',
+            'ws://'.concat(window.location.host.toString()).concat(':1234'),
             this.docID,
             this.yDoc
         );
