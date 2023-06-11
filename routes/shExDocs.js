@@ -53,7 +53,13 @@ module.exports = function (app, logicFactory, viewEngineFactory) {
 //      let authLogic = await logicFactory.forAuth(req.session);
         let shexDocsLogic = await logicFactory.forShExDocs();
 
-        let givenShExDocId = new ObjectId(req.params.shExDocId);
+        let givenShExDocId = null;
+        try {
+            givenShExDocId = new ObjectId(req.params.shExDocId);
+        } catch (error) {
+            res.redirect('/');
+            return;
+        }
         if ((await shexDocsLogic.getShExDocById(givenShExDocId)) === null) {
             res.redirect('/');
             return;

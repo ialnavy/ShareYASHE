@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // WebSockets server
 
 const host = process.env.HOST || '127.0.0.1';
-const port = process.env.PORT || 1234;
+const port = process.env.PORT || 2403;
 
 const server = http.createServer((request, response) => {
     response.writeHead(200, {'Content-Type': 'text/plain'});
@@ -105,7 +105,7 @@ setPersistence({
         })
     }
 })
-const wss = new WebSocket.Server({noServer: true});
+const wss = new WebSocket.Server({port: port});
 wss.on('connection', async (conn, req, options) => {
     // Invoke the original setupWSConnection
     let yDoc = setupWSConnection(conn, req, options);
