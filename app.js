@@ -129,9 +129,11 @@ server.listen(port, host, () => {
     console.log("Running WebSocket Server at host ".concat(host).concat(" on port ").concat(port));
 });
 
+/*
 app.listen(80, () => {
     console.log("Running HTTP Server on port 80");
-})
+});
+*/
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
