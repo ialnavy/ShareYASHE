@@ -2,7 +2,7 @@
   "name": "ShareYASHE",
   "version": "1.0.0",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node bin/www"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
