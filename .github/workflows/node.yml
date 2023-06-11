@@ -15,7 +15,7 @@ jobs:
       - run: npm --version
       - uses: actions/checkout@v3
       - run: npm install
-      - run: npm start
+      - run: npm start & npx wait-on http://localhost:3000
         env:
           SHAREYASHE_CRYPTO_KEY: ${{ secrets.SHAREYASHE_CRYPTO_KEY }}
           SHAREYASHE_MONGODB: ${{ secrets.SHAREYASHE_MONGODB }}
