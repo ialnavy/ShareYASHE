@@ -28,13 +28,13 @@ block mainElementContent
         h3 Actions you can perform
         if shExDoc.owners.includes(username)
             form(action='/deleteDoc/' + shExDoc._id.toString(), method='get')
-                input(type='submit' value='Delete this ShEx doc')
+                input(type='submit' value='Delete doc')
+            form(action='/leaveOwnership/' + shExDoc._id.toString(), method='get')
+                input(type='submit' value='Leave as doc owner')
             form(action='/addOwner/' + shExDoc._id.toString(), method='get')
                 label(for='fNewOwner') Add new owner:#{' '}
                 input(type='text', id='fNewOwner', name='newOwner', required)
                 input(type='submit' value='Add owner')
-            form(action='/leaveOwnership/' + shExDoc._id.toString(), method='get')
-                input(type='submit' value='Leave ownership of this doc')
     section
         h3 Collaborative ShEx document
         p ShareYASHE lets you edit this document in real time with other people. You can do this by copying the link of this website, or clicking in the share button of the editor.
