@@ -6,7 +6,7 @@ body {
         'aside footer footer';
     grid-template-columns: 0.35fr 1fr 1fr;
     gap: 0.25em;
-    word-wrap: break-word
+    word-wrap: break-word;
 }
 header {
     grid-area: header;
@@ -23,4 +23,3 @@ aside {
 footer {
     grid-area: footer;
 }
-

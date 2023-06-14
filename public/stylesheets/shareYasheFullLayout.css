@@ -1,0 +1,12 @@
+@media(min-width: 620px) {
+    body > main > section:first-of-type {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto 0.5fr 0.5fr;
+        word-wrap: break-word;
+    }
+
+    body > main > section:first-of-type > h3 {
+        grid-column: 1 / 4;
+    }
+}

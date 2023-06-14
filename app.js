@@ -34,16 +34,12 @@ app.use(favicon(__dirname + '/public/images/favicon.png'));
 require('browser-env')();
 require('clipboard');
 
-const logicFactory = require("./applicationLayer/logicFactory.js");
-logicFactory.init(app, MongoClient);
+const appLayerFactory = require("./applicationLayer/appLayerFactory.js");
+appLayerFactory.init(app, MongoClient);
 
-const viewEngineFactory = require("./presentationLayer/viewEngineFactory.js");
-
-viewEngineFactory.init(app, MongoClient, logicFactory);
-
-require('./routes/auth.js')(app, logicFactory, viewEngineFactory);
-require('./routes/index.js')(app, logicFactory, viewEngineFactory);
-require('./routes/shExDocs.js')(app, logicFactory, viewEngineFactory);
+require('./routes/auth.js')(app, appLayerFactory);
+require('./routes/index.js')(app, appLayerFactory);
+require('./routes/shExDocs.js')(app, appLayerFactory);
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -54,7 +50,7 @@ app.use(function (req, res, next) {
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'presentationLayer/templates'));
+app.set('views', path.join(__dirname, 'presentationLayer'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));

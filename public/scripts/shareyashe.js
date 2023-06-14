@@ -7,7 +7,7 @@ import {RandomContrastColour} from "./util/RandomContrastColour.mjs";
 // import YASHE from 'https://cdn.jsdelivr.net/npm/yashe@1.3.22/dist/yashe.bundled.min.js';
 
 class ShareYASHE_Client {
-    static EDITOR_TEXTAREA_SELECTOR = 'body > main > textarea:first-of-type';
+    static EDITOR_TEXTAREA_SELECTOR = 'body > main > section:nth-of-type(2) > textarea:last-of-type';
     static SHAREYASHE_USERNAME_SCRIPT_SELECTOR = 'head > script:last-of-type';
 
     constructor() {

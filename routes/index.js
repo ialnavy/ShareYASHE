@@ -1,9 +1,5 @@
-module.exports = function (app, logicFactory, viewEngineFactory) {
-
+module.exports = function (app, appLayerFactory) {
     app.get('/', async function (req, res) {
-        /* Render logic */
-        let indexRenderObj = await viewEngineFactory.forIndexRender(req, res);
-
-        indexRenderObj.render();
+        await (await appLayerFactory.forGetIndexCommand()).execute(req, res);
     });
 }
