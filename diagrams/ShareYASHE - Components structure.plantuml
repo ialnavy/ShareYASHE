@@ -1,0 +1,31 @@
+@startuml ShareYASHE - Components structure
+
+node "ShareYASHE\nHTTP server" as shareYASHE_HTTP {
+   [Routes] as routes
+   [Application layer] as appLayer
+   [Presentation layer] as presLayer
+   [Business layer] as busLayer
+   [Persistence layer] as persLayer
+}
+
+node "ShareYASHE\nWebSocket server" as wss {
+   [WS Server] as wsServer
+}
+
+database "Documents\ndatabase" as db {
+}
+
+together {
+   WebSocket -down-> wss
+   HTTP -down-> routes
+}
+
+routes -down-> appLayer
+appLayer -down-> busLayer
+appLayer -down-> presLayer
+busLayer -down-> persLayer
+
+persLayer -down-> db
+wss -down-> db
+
+@enduml

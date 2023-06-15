@@ -10,6 +10,12 @@ module.exports = {
         this.mongoClient = mongoClient;
     },
 
+    /* COMMAND EXECUTOR */
+    forExecutor: async function() {
+        let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;
+        return new CommandExecutor(this.app, this.mongoClient, ObjectId);
+    },
+
     /* INDEX */
     forGetIndexCommand: async function () {
         let GetIndexCommand = (await import('./GetIndexCommand.mjs')).GetIndexCommand;

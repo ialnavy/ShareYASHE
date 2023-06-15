@@ -25,6 +25,10 @@ class BusinessFactory {
         return new RenderBusiness(app, mongoClient, req, res, "", "index.pug");
     }
 
+    static forRenderError(app, mongoClient, req, res) {
+        return new RenderBusiness(app, mongoClient, req, res, " - Unexpected error", "error.pug");
+    }
+
     static forRenderLogin(app, mongoClient, req, res) {
         return new RenderBusiness(app, mongoClient, req, res, " - Log in", "userAuth/login.pug");
     }

@@ -1,6 +1,5 @@
 import {AbstractBusiness} from "../AbstractBusiness.mjs";
 import {PersistenceFactory} from "../../persistenceLayer/PersistenceFactory.mjs";
-import {ObjectId} from "mongodb";
 
 class ShExDocBusiness extends AbstractBusiness {
     async getShExDocsByOwner(owner) {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="ShareYASHE" company="University of Oviedo" webLink="http://" view-date="2023-01-01" view-index="0" gantt-divider-location="471" resource-divider-location="300" version="3.2.3247" locale="en_GB">
+    <description/>
+    <view zooming-state="default:8" id="gantt-chart">
+        <field id="tpd3" name="Nombre" width="198" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="137" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="135" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="210" order="0"/>
+        <field id="1" name="Default role" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="6" name="Project planning" color="#8cb6ce" meeting="false" start="2023-01-03" duration="10" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="11" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="11" name="Requirements engineering" color="#8cb6ce" meeting="false" start="2023-01-17" duration="20" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+            <depend id="1" type="2" difference="0" hardness="Strong"/>
+            <task id="12" name="Feasibility study" color="#8cb6ce" meeting="false" start="2023-01-17" duration="4" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+                <depend id="13" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="13" name="Requirements elicitation" color="#8cb6ce" meeting="false" start="2023-01-23" duration="10" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+                <depend id="14" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="14" name="Requirements specification" color="#8cb6ce" meeting="false" start="2023-02-06" duration="6" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true">
+                <task id="15" name="Specify use cases" color="#8cb6ce" meeting="false" start="2023-02-06" duration="6" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true"/>
+                <task id="16" name="Specify use scenarios" color="#8cb6ce" meeting="false" start="2023-02-06" duration="6" complete="0" thirdDate="2023-02-06" thirdDate-constraint="0" expand="true"/>
+                <task id="17" name="Specify user interfaces" color="#8cb6ce" meeting="false" start="2023-02-06" duration="6" complete="0" thirdDate="2023-02-06" thirdDate-constraint="0" expand="true"/>
+            </task>
+        </task>
+        <task id="1" name="Design &amp; architecture" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="2" type="2" difference="0" hardness="Strong"/>
+            <task id="10" name="Define Software architecture" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-01-17" thirdDate-constraint="0" expand="true"/>
+            <task id="18" name="Define classes, interactions and states" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="19" name="Design user interface" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="20" name="Define data model" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-02-14" thirdDate-constraint="0" expand="true"/>
+            <task id="22" name="Specify test planning" color="#8cb6ce" meeting="false" start="2023-02-14" duration="20" complete="0" thirdDate="2023-02-14" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="2" name="Development" color="#8cb6ce" meeting="false" start="2023-03-14" duration="60" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="25" type="2" difference="0" hardness="Strong"/>
+            <task id="24" name="System development" color="#8cb6ce" meeting="false" start="2023-03-14" duration="35" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+                <depend id="23" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="23" name="Test development" color="#8cb6ce" meeting="false" start="2023-05-02" duration="25" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="25" name="System documentation" color="#8cb6ce" meeting="false" start="2023-06-06" duration="10" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+            <task id="26" name="Deployment manual" color="#8cb6ce" meeting="false" start="2023-06-06" duration="10" complete="0" thirdDate="2023-06-06" thirdDate-constraint="0" expand="true"/>
+            <task id="28" name="Developer's manual" color="#8cb6ce" meeting="false" start="2023-06-06" duration="10" complete="0" thirdDate="2023-06-06" thirdDate-constraint="0" expand="true"/>
+            <task id="27" name="User's manual" color="#8cb6ce" meeting="false" start="2023-06-06" duration="10" complete="0" thirdDate="2023-06-06" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="4" name="Deployment" color="#8cb6ce" meeting="false" start="2023-06-20" duration="3" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="5" name="Release" color="#8cb6ce" meeting="false" start="2023-06-23" duration="3" complete="0" thirdDate="2023-01-02" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

@@ -1,0 +1,26 @@
+@startuml ShareYASHE - Deployment structure
+left to right direction
+
+actor "User" as user
+
+cloud {
+    artifact "ShareYASHE\nHTTP server" as httpServer {
+    }
+    artifact "ShareYASHE\nWebSocket server" as wsServer {
+    }
+    database "Documents\ndatabase" as db {
+    }
+}
+
+artifact "ShareYASHE\nclient" as client {
+}
+
+user -left-> client
+
+client -down-> httpServer
+client -down-> wsServer
+
+httpServer -down-> db
+wsServer -down-> db
+
+@enduml

@@ -3,6 +3,5 @@ extends mainLayout
 block additionalHeadElementContent
   // This view does not require any additional script or stylesheet
 block mainElementContent
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  h2=title
+  p=message
