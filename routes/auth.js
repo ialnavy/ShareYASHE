@@ -1,26 +1,24 @@
 module.exports = async function (app, appLayerFactory) {
 
-    let commandExecutor = await appLayerFactory.forExecutor();
-
     /* REGISTER (HTTP GET & HTTP POST) */
     app.get('/register', async function (req, res) {
-        await commandExecutor.execute(req, res, await appLayerFactory.forGetRegisterCommand());
+        await appLayerFactory.forGetRegisterCommand(req, res);
     });
     app.post('/register', async function (req, res) {
-        await commandExecutor.execute(req, res, await appLayerFactory.forPostRegisterCommand());
+        await appLayerFactory.forPostRegisterCommand(req, res);
     });
 
     /* LOGIN (HTTP GET & HTTP POST) */
     app.get('/login', async function (req, res) {
-        await commandExecutor.execute(req, res, await appLayerFactory.forGetLoginCommand());
+        await appLayerFactory.forGetLoginCommand(req, res);
     });
     app.post('/login', async function (req, res) {
-        await commandExecutor.execute(req, res, await appLayerFactory.forPostLoginCommand());
+        await appLayerFactory.forPostLoginCommand(req, res);
     });
 
     /* LOGOUT (HTTP GET) */
     app.get('/logout', async function (req, res) {
-        await commandExecutor.execute(req, res, await appLayerFactory.forGetLogoutCommand());
+        await appLayerFactory.forGetLogoutCommand(req, res);
     });
 }
 
