@@ -35,5 +35,16 @@ class UserBusiness extends AbstractBusiness {
         return ((await usersRepo.count({username: username})) !== 0)
     }
 
+    async unregisterUser(givenUsername) {
+        if (givenUsername === null || givenUsername === undefined || givenUsername === '')
+            return;
+        let usersRepo = PersistenceFactory.forUsers(this.app, this.mongoClient);
+        let username = (new String(givenUsername)).toString();
+        if ((await usersRepo.count({username: username})) === 0)
+            return;
+        let user = await usersRepo.findOne({username: username});
+        await usersRepo.deleteOne({_id: user._id});
+    }
+
 }
 export {UserBusiness};

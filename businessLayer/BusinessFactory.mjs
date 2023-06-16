@@ -37,6 +37,10 @@ class BusinessFactory {
         return new RenderBusiness(app, mongoClient, req, res, " - Register", "userAuth/register.pug");
     }
 
+    static forRenderUnregister(app, mongoClient, req, res) {
+        return new RenderBusiness(app, mongoClient, req, res, " - Unregister", "userAuth/unregister.pug");
+    }
+
     static forRenderCreateShExDoc(app, mongoClient, req, res) {
         return new RenderBusiness(app, mongoClient, req, res, " - Create shareable ShEx document", "shExDoc/shExDocCreate.pug");
     }

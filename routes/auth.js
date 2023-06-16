@@ -8,6 +8,14 @@ module.exports = async function (app, appLayerFactory) {
         await appLayerFactory.forPostRegisterCommand(req, res);
     });
 
+    /* UNREGISTER (HTTP GET & HTTP POST) */
+    app.get('/unregister', async function (req, res) {
+        await appLayerFactory.forGetUnregisterCommand(req, res);
+    });
+    app.post('/unregister', async function (req, res) {
+        await appLayerFactory.forPostUnregisterCommand(req, res);
+    });
+
     /* LOGIN (HTTP GET & HTTP POST) */
     app.get('/login', async function (req, res) {
         await appLayerFactory.forGetLoginCommand(req, res);

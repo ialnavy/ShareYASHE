@@ -93,6 +93,26 @@ module.exports = {
         await commandExecutor.execute(req, res, postRegisterCommand);
     },
 
+    forGetUnregisterCommand: async function (req, res) {
+        let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;
+        let GetUnregisterCommand = (await import('./Auth/GetUnregisterCommand.mjs')).GetUnregisterCommand;
+
+        let commandExecutor = new CommandExecutor(this.app, this.mongoClient, ObjectId);
+        let getUnregisterCommand = new GetUnregisterCommand(this.app, this.mongoClient, ObjectId);
+
+        await commandExecutor.execute(req, res, getUnregisterCommand);
+    },
+
+    forPostUnregisterCommand: async function (req, res) {
+        let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;
+        let PostUnregisterCommand = (await import('./Auth/PostUnregisterCommand.mjs')).PostUnregisterCommand;
+
+        let commandExecutor = new CommandExecutor(this.app, this.mongoClient, ObjectId);
+        let postUnregisterCommand = new PostUnregisterCommand(this.app, this.mongoClient, ObjectId);
+
+        await commandExecutor.execute(req, res, postUnregisterCommand);
+    },
+
     forGetLoginCommand: async function (req, res) {
         let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;
         let GetLoginCommand = (await import('./Auth/GetLoginCommand.mjs')).GetLoginCommand;

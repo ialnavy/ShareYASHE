@@ -1,0 +1,10 @@
+extends ../mainLayout
+
+block additionalHeadElementContent
+    // This view does not require any additional script or stylesheet
+block mainElementContent
+    h2 Delete your account
+    p The deletion of your account will remove all your data from ShareYASHE. Your ownership of your ShEx docs will disappear. Are you sure that you want to delete your account?
+    form(action='/unregister', method='post')
+        p
+            input(type='submit' value='Yes, delete my account')
