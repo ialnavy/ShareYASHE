@@ -38,10 +38,26 @@ class UserBusiness extends AbstractBusiness {
     async unregisterUser(givenUsername) {
         if (givenUsername === null || givenUsername === undefined || givenUsername === '')
             return;
+        let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
         let usersRepo = PersistenceFactory.forUsers(this.app, this.mongoClient);
         let username = (new String(givenUsername)).toString();
         if ((await usersRepo.count({username: username})) === 0)
             return;
+
+        let modifications = [];
+        let cursor = await shExDocsRepo.findMany({owners: username});
+        while (await cursor.hasNext()) {
+            let ownedShExDoc = await cursor.next();
+            let newOwners = [];
+            for (let previousOwner of ownedShExDoc.owners) {
+                if (previousOwner !== username)
+                    newOwners.push(previousOwner);
+            }
+            modifications.push([ownedShExDoc._id, newOwners]);
+        }
+        for (let modification of modifications)
+            await shExDocsRepo.updateOne({_id: modification[0]}, {"$set": { owners: modification[1] }});
+
         let user = await usersRepo.findOne({username: username});
         await usersRepo.deleteOne({_id: user._id});
     }
