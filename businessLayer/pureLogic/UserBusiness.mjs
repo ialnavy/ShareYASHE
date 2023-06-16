@@ -7,7 +7,8 @@ class UserBusiness extends AbstractBusiness {
         let user = {
             email: this.req.body.email,
             username: this.req.body.username,
-            password: this.cipherPassword(this.req.body.password)
+            password: this.cipherPassword(this.req.body.password),
+            creationDate: new Date()
         };
         await usersRepo.insertOne(user);
     }
@@ -24,6 +25,14 @@ class UserBusiness extends AbstractBusiness {
             return false;
         return ((new String(user.password)).toString()
             === (new String(this.cipherPassword(this.req.body.password))).toString());
+    }
+
+    async existsUser(user) {
+        if (user === null || user === undefined || user === '')
+            return false;
+        let usersRepo = PersistenceFactory.forUsers(this.app, this.mongoClient);
+        let username = (new String(user)).toString();
+        return ((await usersRepo.count({username: username})) !== 0)
     }
 
 }

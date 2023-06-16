@@ -29,7 +29,7 @@ block mainElementContent
             h3 Actions you can perform
             form(action='/leaveOwnership/' + shExDoc._id.toString(), method='get')
                 input(type='submit' value='Leave as doc owner')
-            form(action='/addOwner/' + shExDoc._id.toString(), method='get')
+            form(action='/addOwner/' + shExDoc._id.toString(), method='post')
                 label(for='fNewOwner') Add new owner:#{' '}
                 input(type='text', id='fNewOwner', name='newOwner', required)
                 input(type='submit' value='Add owner')

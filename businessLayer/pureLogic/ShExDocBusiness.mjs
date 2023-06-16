@@ -16,7 +16,8 @@ class ShExDocBusiness extends AbstractBusiness {
                 let persistentShExDoc = await shExDocsCursor.next();
                 shExDocs.push({
                     docId: persistentShExDoc._id.toString(),
-                    title: persistentShExDoc.title.toString()
+                    title: persistentShExDoc.title.toString(),
+                    creationDate: new Date()
                 });
             }
         }
@@ -58,10 +59,11 @@ class ShExDocBusiness extends AbstractBusiness {
         return await shExDocsRepo.findOne({_id: shExDocId});
     }
 
-    async isOwnedBy(shExDocId, username) {
+    async isOwnedBy(shExDocId, givenUser) {
         if (shExDocId === null || shExDocId === undefined
-            || username === null || username === undefined)
+            || givenUser === null || givenUser === undefined)
             return false;
+        let username = (new String(givenUser)).toString();
         let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
         if ((await shExDocsRepo.count({_id: shExDocId})) === 0)
             return false;
@@ -71,10 +73,11 @@ class ShExDocBusiness extends AbstractBusiness {
         return (shExDoc.owners.includes(username));
     }
 
-    async removeOwner(shExDocId, username) {
+    async removeOwner(shExDocId, givenUser) {
         if (shExDocId === null || shExDocId === undefined
-            || username === null || username === undefined)
+            || givenUser === null || givenUser === undefined)
             return;
+        let username = (new String(givenUser)).toString();
         let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
         if ((await shExDocsRepo.count({_id: shExDocId})) === 0)
             return;
@@ -89,6 +92,27 @@ class ShExDocBusiness extends AbstractBusiness {
             if (owner !== username)
                 newOwners.push(owner);
         }
+        await shExDocsRepo.updateOne({_id: shExDocId}, {"$set": { owners: newOwners }});
+    }
+
+    async addOwner(shExDocId, givenUser) {
+        if (shExDocId === null || shExDocId === undefined
+            || givenUser === null || givenUser === undefined)
+            return;
+        let username = (new String(givenUser)).toString();
+        let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
+        if ((await shExDocsRepo.count({_id: shExDocId})) === 0)
+            return;
+        let shExDoc = await shExDocsRepo.findOne({_id: shExDocId});
+        if (shExDoc === null || shExDoc === undefined)
+            return;
+        if (shExDoc.owners.includes(username))
+            return;
+
+        let newOwners = [];
+        for (let owner of shExDoc.owners)
+            newOwners.push(owner);
+        newOwners.push(username);
         await shExDocsRepo.updateOne({_id: shExDocId}, {"$set": { owners: newOwners }});
     }
 }
