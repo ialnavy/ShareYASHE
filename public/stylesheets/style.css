@@ -27,6 +27,10 @@ header > p:nth-of-type(2) {
     text-decoration: underline overline;
 }
 
+aside > figure > figcaption {
+    text-decoration: underline;
+}
+
 a, input, button {
     border: solid 1.25px #e0e0e0;
     box-shadow: 0 0.75px 1px #c0c0c0;

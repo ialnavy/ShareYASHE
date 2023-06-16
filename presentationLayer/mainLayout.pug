@@ -50,15 +50,13 @@ html(lang='en')
                             li
                                 a(href='/shexDoc/' + shexDoc.docId) #{shexDoc.title}
             else
-                p You do not have any shareable ShEx document yet.
+                figure
+                    figcaption Your ShEx docs
+                    ul
+                        li Nothing yet.
         main
             block mainElementContent
         footer
-            p This is a Degree Project for the Bachelor's Degree in Software Engineering (see#{' '}
-                a(href='https://ingenieriainformatica.uniovi.es/') School of Computer Engineering of Oviedo
-                | ).
-            p Made by Iván Álvarez López (
-                a(href='mailto:UO264862@uniovi.es') UO264862@uniovi.es
-                | ). Contact me through my#{' '}
+            p Made by Iván Álvarez López. Contact:#{' '}
                 a(href='https://linktr.ee/ialnavy') link tree
-                |.
+                | .
