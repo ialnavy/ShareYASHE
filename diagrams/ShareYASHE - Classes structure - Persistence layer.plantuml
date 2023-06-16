@@ -1,0 +1,41 @@
+@startuml ShareYASHE - Classes structure - Persistence layer
+left to right direction
+
+package "Persistence layer" as persistenceLayer {
+    class "PersistenceFactory" as persistenceFactory {
+    }
+    abstract class "AbstractRepository" as abstractRepository {
+        {static}-clientDB = 'local'
+        --
+        +AbstractRepository(app, mongoClient, collectionName)
+        +findOne(filter, options)
+        +findMany(filter, projection, options)
+        +findAll()
+        +insertOne(item)
+        +count(filter)
+        +updateOne(query, update, options)
+        +deleteOne(filter, options)
+    }
+
+    class "ShExDocRepository" as shExDocRepository {
+        --
+        +ShExDocRepository(app, mongoClient)
+    }
+    class "UserRepository" as userRepository {
+        --
+        +UserRepository(app, mongoClient)
+    }
+}
+database "Documents\ndatabase" as db {
+}
+
+shExDocRepository -right-|> abstractRepository
+userRepository -right-|> abstractRepository
+
+persistenceFactory --> shExDocRepository
+persistenceFactory --> userRepository
+
+shExDocRepository --> db
+userRepository --> db
+
+@enduml

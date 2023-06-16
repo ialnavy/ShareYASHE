@@ -1,0 +1,72 @@
+@startuml ShareYASHE - Classes structure - Business layer
+left to right direction
+
+package "Business layer" as businessLayer {
+    class "BusinessFactory" as businessFactory {
+    }
+    abstract class "AbstractBusiness" as abstractBusiness {
+        --
+        +AbstractBusiness(app, mongoClient, req, res)
+        +cipherPassword(password)
+    }
+    class "AuthBusiness" as authBusiness {
+        --
+        +isUserLogged()
+        +getUserLogged()
+        +doLogin()
+        +doLogout()
+
+        +isValidEmail()
+        +isValidUsername()
+        +isValidPassword()
+    }
+    class "ShExDocBusiness" as shExDocBusiness {
+        --
+        +getShExDocsByOwner(owner)
+        +isCreableShExDoc()
+        +createShExDocForOneOwner(username)
+        +existsShExDoc(shExDocId)
+        +getShExDocById(shExDocId)
+        +isOwnedBy(shExDocId, givenUser)
+        +removeOwner(shExDocId, givenUser)
+        +addOwner(shExDocId, givenUser)
+    }
+    class "UserBusiness" as userBusiness {
+        --
+        +createUser()
+        +checkLoginCredentials()
+        +existsUser(user)
+        +unregisterUser(givenUsername)
+    }
+
+    package "Render" as render {
+        class "RenderBusiness" as renderBusiness {
+            --
+            +RenderBusiness(app, mongoClient, req, res, title, renderTemplate)
+            +render(message, username, ownedShExDocs, shExDoc)
+        }
+    }
+}
+package "Persistence layer" as persistenceLayer {
+    class "PersistenceFactory" as persistenceFactory {
+        {static}+forUsers(app, mongoClient)
+        {static}+forShExDocs(app, mongoClient)
+    }
+}
+
+shExDocBusiness -right-|> abstractBusiness
+userBusiness -right-|> abstractBusiness
+authBusiness -right-|> abstractBusiness
+renderBusiness -right-|> abstractBusiness
+
+businessFactory --> shExDocBusiness
+businessFactory --> userBusiness
+businessFactory --> authBusiness
+businessFactory --> renderBusiness
+
+shExDocBusiness --> persistenceFactory
+userBusiness --> persistenceFactory
+authBusiness --> persistenceFactory
+renderBusiness --> persistenceFactory
+
+@enduml

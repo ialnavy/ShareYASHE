@@ -1,0 +1,147 @@
+@startuml ShareYASHE - Classes structure - Application layer
+left to right direction
+
+package "Application layer" as appLayer {
+    class "AppLayerFactory" as appLayerFactory {
+    }
+
+    class "CommandExecutor" as commandExecutor {
+        --
+        +execute(req, res, AbstractAppLayerCommand)
+    }
+
+    abstract class "AbstractAppLayerCommand" as abstractAppLayerCommand {
+        --
+        +AbstractAppLayerCommand(req, res, ObjectId)
+        {abstract}+execute(req, res)
+        #asObjectId(stringID)
+    }
+
+    class "GetIndexCommand" as getIndexCommand {
+        --
+        +execute(req, res)
+    }
+
+    package "ShExDoc" as appLayerShExDoc {
+        class "GetCreateShExDocCommand" as getCreateShExDocCommand {
+            --
+            +execute(req, res)
+        }
+        class "PostCreateShExDocCommand" as postCreateShExDocCommand {
+            --
+            +execute(req, res)
+        }
+        class "GetShExDocCommand" as getShExDocCommand {
+            --
+            +execute(req, res)
+        }
+        class "GetLeaveOwnershipCommand" as getLeaveOwnershipCommand {
+            --
+            +execute(req, res)
+        }
+        class "PostAddOwnerCommand" as postAddOwnerCommand {
+            --
+            +execute(req, res)
+        }
+    }
+
+        package "Auth" as appLayerAuth {
+        class "GetRegisterCommand" as getRegisterCommand {
+            --
+            +execute(req, res)
+        }
+        class "PostRegisterCommand" as postRegisterCommand {
+            --
+            +execute(req, res)
+        }
+        class "GetUnregisterCommand" as getUnregisterCommand {
+            --
+            +execute(req, res)
+        }
+        class "PostUnregisterCommand" as postUnregisterCommand {
+            --
+            +execute(req, res)
+        }
+        class "GetLoginCommand" as getLoginCommand {
+            --
+            +execute(req, res)
+        }
+        class "PostLoginCommand" as postLoginCommand {
+            --
+            +execute(req, res)
+        }
+        class "GetLogoutCommand" as getLogoutCommand {
+            --
+            +execute(req, res)
+        }
+    }
+}
+
+package "Business layer" as busLayer {
+    class "BusinessFactory" as businessFactory {
+        --
+        {static}+forAuth(app, mongoClient, req, res)
+        {static}+forShExDoc(app, mongoClient, req, res)
+        {static}+forUser(app, mongoClient, req, res)
+
+        {static}+forRenderIndex(app, mongoClient, req, res)
+        {static}+forRenderError(app, mongoClient, req, res)
+        {static}+forRenderLogin(app, mongoClient, req, res)
+        {static}+forRenderRegister(app, mongoClient, req, res)
+        {static}+forRenderUnregister(app, mongoClient, req, res)
+        {static}+forRenderCreateShExDoc(app, mongoClient, req, res)
+        {static}+forRenderShExDoc(app, mongoClient, req, res)
+    }
+}
+
+getRegisterCommand --> businessFactory
+postRegisterCommand --> businessFactory
+getUnregisterCommand --> businessFactory
+postUnregisterCommand --> businessFactory
+getLoginCommand --> businessFactory
+postLoginCommand --> businessFactory
+getLogoutCommand --> businessFactory
+
+getCreateShExDocCommand --> businessFactory
+postCreateShExDocCommand --> businessFactory
+getShExDocCommand --> businessFactory
+getLeaveOwnershipCommand --> businessFactory
+postAddOwnerCommand --> businessFactory
+
+getIndexCommand --> businessFactory
+
+appLayerFactory --> getRegisterCommand
+appLayerFactory --> postRegisterCommand
+appLayerFactory --> getUnregisterCommand
+appLayerFactory --> postUnregisterCommand
+appLayerFactory --> getLoginCommand
+appLayerFactory --> postLoginCommand
+appLayerFactory --> getLogoutCommand
+
+appLayerFactory --> getCreateShExDocCommand
+appLayerFactory --> postCreateShExDocCommand
+appLayerFactory --> getShExDocCommand
+appLayerFactory --> getLeaveOwnershipCommand
+appLayerFactory --> postAddOwnerCommand
+
+appLayerFactory --> getIndexCommand
+
+appLayerFactory --> commandExecutor
+
+getRegisterCommand -right-|> abstractAppLayerCommand
+postRegisterCommand -right-|> abstractAppLayerCommand
+getUnregisterCommand -right-|> abstractAppLayerCommand
+postUnregisterCommand -right-|> abstractAppLayerCommand
+getLoginCommand -right-|> abstractAppLayerCommand
+postLoginCommand -right-|> abstractAppLayerCommand
+getLogoutCommand -right-|> abstractAppLayerCommand
+
+getCreateShExDocCommand -right-|> abstractAppLayerCommand
+postCreateShExDocCommand -right-|> abstractAppLayerCommand
+getShExDocCommand -right-|> abstractAppLayerCommand
+getLeaveOwnershipCommand -right-|> abstractAppLayerCommand
+postAddOwnerCommand -right-|> abstractAppLayerCommand
+
+getIndexCommand -right-|> abstractAppLayerCommand
+
+@enduml

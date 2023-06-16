@@ -1,0 +1,59 @@
+@startuml ShareYASHE - Classes structure - Routes layer
+
+package "Routes" as routes {
+    class "Index" as index {
+        --
+        +GET /
+    }
+    class "Auth" as auth {
+        --
+        +GET /register
+        +POST /register
+
+        +GET /unregister
+        +POST /unregister
+
+        +GET /login
+        +POST /login
+
+        +GET /logout
+    }
+    class "ShExDocs" as shExDocs {
+        --
+        +GET /createDoc
+        +POST /createDoc
+
+        +GET /shexDoc/:shExDocId
+
+        +GET /leaveOwnership/:shExDocId
+        +POST /addOwner/:shExDocId
+    }
+}
+
+package "Application layer" as appLayer {
+    class "AppLayerFactory" as appLayerFactory {
+        -CommandExecutor commandExecutor
+        --
+        +forGetIndexCommand(req, res)
+
+        +forGetCreateShExDocCommand(req, res)
+        +forPostCreateShExDocCommand(req, res)
+        +forGetShExDocCommand(req, res)
+        +forGetLeaveOwnershipCommand(req, res)
+        +forPostAddOwnerCommand(req, res)
+
+        +forGetRegisterCommand(req, res)
+        +forPostRegisterCommand(req, res)
+        +forGetUnregisterCommand(req, res)
+        +forPostUnregisterCommand(req, res)
+        +forGetLoginCommand(req, res)
+        +forPostLoginCommand(req, res)
+        +forGetLogoutCommand(req, res)
+    }
+}
+
+index --> appLayerFactory
+auth --> appLayerFactory
+shExDocs --> appLayerFactory
+
+@enduml
