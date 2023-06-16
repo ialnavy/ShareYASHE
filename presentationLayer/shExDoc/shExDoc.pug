@@ -24,19 +24,15 @@ block additionalHeadElementContent
             | const shareYASHEusernameGotFromViewEngine = (new String("#{username}")).toString();
 block mainElementContent
     h2=title
-    section
-        h3 Actions you can perform
-        if shExDoc.owners.includes(username)
-            form(action='/deleteDoc/' + shExDoc._id.toString(), method='get')
-                input(type='submit' value='Delete doc')
+    if shExDoc.owners.includes(username)
+        section
+            h3 Actions you can perform
             form(action='/leaveOwnership/' + shExDoc._id.toString(), method='get')
                 input(type='submit' value='Leave as doc owner')
             form(action='/addOwner/' + shExDoc._id.toString(), method='get')
                 label(for='fNewOwner') Add new owner:#{' '}
                 input(type='text', id='fNewOwner', name='newOwner', required)
                 input(type='submit' value='Add owner')
-        else
-            p You cannot perform any action on this ShEx document because either you are not logged in, or you do not own it.
     section
         h3 Collaborative ShEx document
         p ShareYASHE lets you edit this document in real time with other people. You can do this by copying the link of this website, or clicking in the share button of the editor.

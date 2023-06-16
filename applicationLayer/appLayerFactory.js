@@ -52,6 +52,16 @@ module.exports = {
         await commandExecutor.execute(req, res, getShExDocCommand);
     },
 
+    forGetLeaveOwnershipCommand: async function(req, res) {
+        let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;
+        let GetLeaveOwnershipCommand = (await import('./ShExDoc/GetLeaveOwnershipCommand.mjs')).GetLeaveOwnershipCommand;
+
+        let commandExecutor = new CommandExecutor(this.app, this.mongoClient, ObjectId);
+        let getLeaveOwnershipCommand = new GetLeaveOwnershipCommand(this.app, this.mongoClient, ObjectId);
+
+        await commandExecutor.execute(req, res, getLeaveOwnershipCommand);
+    },
+
     /* USERS */
     forGetRegisterCommand: async function (req, res) {
         let CommandExecutor = (await import('./CommandExecutor.mjs')).CommandExecutor;

@@ -57,5 +57,39 @@ class ShExDocBusiness extends AbstractBusiness {
             return null;
         return await shExDocsRepo.findOne({_id: shExDocId});
     }
+
+    async isOwnedBy(shExDocId, username) {
+        if (shExDocId === null || shExDocId === undefined
+            || username === null || username === undefined)
+            return false;
+        let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
+        if ((await shExDocsRepo.count({_id: shExDocId})) === 0)
+            return false;
+        let shExDoc = await shExDocsRepo.findOne({_id: shExDocId});
+        if (shExDoc === null || shExDoc === undefined)
+            return false;
+        return (shExDoc.owners.includes(username));
+    }
+
+    async removeOwner(shExDocId, username) {
+        if (shExDocId === null || shExDocId === undefined
+            || username === null || username === undefined)
+            return;
+        let shExDocsRepo = PersistenceFactory.forShExDocs(this.app, this.mongoClient);
+        if ((await shExDocsRepo.count({_id: shExDocId})) === 0)
+            return;
+        let shExDoc = await shExDocsRepo.findOne({_id: shExDocId});
+        if (shExDoc === null || shExDoc === undefined)
+            return;
+        if (!(shExDoc.owners.includes(username)))
+            return;
+
+        let newOwners = [];
+        for (let owner of shExDoc.owners) {
+            if (owner !== username)
+                newOwners.push(owner);
+        }
+        await shExDocsRepo.updateOne({_id: shExDocId}, {"$set": { owners: newOwners }});
+    }
 }
 export {ShExDocBusiness};

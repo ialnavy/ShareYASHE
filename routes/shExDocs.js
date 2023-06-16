@@ -13,15 +13,10 @@ module.exports = async function (app, appLayerFactory) {
     });
 
     /* DOC OPERATIONS (HTTP GET) */
-    app.get('/deleteDoc/:shExDocId', async function (req, res) {
-        // TODO
-    });
-
-    app.get('/addOwner/:shExDocId', async function (req, res) {
-        // TODO
-    });
-
     app.get('/leaveOwnership/:shExDocId', async function (req, res) {
+        await appLayerFactory.forGetLeaveOwnershipCommand(req, res);
+    });
+    app.get('/addOwner/:shExDocId', async function (req, res) {
         // TODO
     });
 }

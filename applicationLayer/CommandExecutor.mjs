@@ -7,8 +7,9 @@ class CommandExecutor extends AbstractAppLayerCommand {
         try {
             command.execute(req, res);
         } catch(error) {
+            console.log("UNEXPECTED ERROR!");
             console.log(error);
-            await renderingBusiness.render("A critical error happened. Please, provide feedback to the administrator of this website.");
+            await renderingBusiness.render("An unexpected error happened. Please, provide feedback to the administrator of this website.");
         }
     }
 }
