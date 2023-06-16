@@ -1,0 +1,39 @@
+@startuml ShareYASHE - Data model
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+database "Entities" as local {
+    entity "Users" as users {
+        * _id : ObjectId
+        --
+        *email : String
+        *username : String
+        *password : String
+        creationDate : Date
+    }
+    entity "ShExDocs" as shExDocs {
+        * _id : ObjectId
+        --
+        *title : String
+        *owners : String[]
+        creationDate : Date
+    }
+}
+database "Ydocs" as test {
+    entity "Ydoc0001" as ydoc0001 {
+        * _id : ObjectId
+        --
+        *version : String
+        action : String
+        *docName : String
+        clock : Integer
+        *value : BinData
+    }
+}
+
+shExDocs ||-up-o{ users : "owners"
+shExDocs ||-up-|| ydoc0001 : "docName\n = ShExDocs._id\n = 'Ydoc0001'"
+
+@enduml
