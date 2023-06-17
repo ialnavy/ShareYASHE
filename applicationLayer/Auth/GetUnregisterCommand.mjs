@@ -4,6 +4,7 @@ import {AbstractAppLayerCommand} from "../AbstractAppLayerCommand.mjs";
 class GetUnregisterCommand extends AbstractAppLayerCommand {
     async execute(req, res) {
         let authBusiness = BusinessFactory.forAuth(this.app, this.mongoClient, req, res);
+        let shExDocBusiness = BusinessFactory.forShExDoc(this.app, this.mongoClient, req, res);
         let renderingBusiness = BusinessFactory.forRenderUnregister(this.app, this.mongoClient, req, res);
 
         if (!(await authBusiness.isUserLogged())) {
@@ -11,7 +12,9 @@ class GetUnregisterCommand extends AbstractAppLayerCommand {
             return;
         }
 
-        await renderingBusiness.render('');
+        await renderingBusiness.render('', 
+                await authBusiness.getUserLogged(),
+                await shExDocBusiness.getShExDocsByOwner(await authBusiness.getUserLogged()),);
     }
 }
 
