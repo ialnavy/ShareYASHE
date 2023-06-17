@@ -67,6 +67,5 @@ businessFactory --> renderBusiness
 shExDocBusiness --> persistenceFactory
 userBusiness --> persistenceFactory
 authBusiness --> persistenceFactory
-renderBusiness --> persistenceFactory
 
 @enduml
