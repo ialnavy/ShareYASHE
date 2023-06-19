@@ -9,6 +9,7 @@ const {MongodbPersistence} = require("y-mongodb-provider");
 const WebSocket = require('ws');
 const {setPersistence, setupWSConnection} = require("./wsServer/utils");
 const Y = require("yjs");
+const audit = require('express-requests-logger');
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 const jwt = require('jsonwebtoken');
 app.set('jwt', jwt);
+
+app.use(audit());
 
 const expressSession = require('express-session');
 app.use(expressSession({secret: app.get('key'), resave: true, saveUninitialized: true}));
@@ -42,6 +45,11 @@ require('./routes/index.js')(app, appLayerFactory);
 require('./routes/shExDocs.js')(app, appLayerFactory);
 
 app.use(function (req, res, next) {
+    console.log("-----------------------------------------------");
+    console.log("INCOMING HTTP REQUEST");
+    console.log((new String(req.method)).toString().concat(" ")
+            .concat((new String(req.rawHeaders[1])).toString()));
+    console.log("-----------------------------------------------");
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
     res.header("Access-Control-Allow-Methods", "POST, GET, DELETE, UPDATE, PUT");
