@@ -1,0 +1,26 @@
+@startuml ShareYASHE - Deployment structure - ShareYASHE client
+actor "User" as user
+participant "ShareYASHE\nClient" as client
+participant "ShareYASHE\nServer" as server
+
+user -> server: GET "/"
+server -> user: HTTP Index rendered view
+
+user -> server: GET "/login"
+server -> user: HTTP Login rendered view
+
+user -> server: POST "/login"
+server -> user: Redirection to Index\nIndex rendered view\n(Credentials validated)
+
+user -> server: GET "/shExDoc/:shExDocId"
+server -> client: Create ShareYASHE client\n(Client-side JavaScript)
+server -> user: Provide ShareYASHE client source code
+server -> user: HTTP ShEx doc rendered view
+group WebSocket Connection [until the user leaves the view]
+    client -> server: Establish WebSocket connection
+    client -> server: Subscribe to the Ydoc object
+
+    user -> client: Edit content of ShEx document
+    client -> server: Publish update to the Ydoc object
+end
+@enduml

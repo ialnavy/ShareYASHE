@@ -1,4 +1,4 @@
-@startuml ShareYASHE - Deployment structure
+@startuml ShareYASHE - Deployment structure - ShareYASHE server
 left to right direction
 
 actor "User" as user
@@ -12,13 +12,8 @@ cloud {
     }
 }
 
-artifact "ShareYASHE\nclient" as client {
-}
-
-user -left-> client
-
-client -down-> httpServer
-client -down-> wsServer
+user -left-> httpServer
+user -left-> wsServer
 
 httpServer -down-> db
 wsServer -down-> db
