@@ -53,6 +53,9 @@ app.use(function (req, res, next) {
 app.set('views', path.join(__dirname, 'presentationLayer'));
 app.set('view engine', 'pug');
 
+app.use(logger('common', {
+    stream: fs.createWriteStream('./access.log', {flags: 'a'})
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
