@@ -19,7 +19,7 @@ block additionalHeadElementContent
     script(type='module', src='/scripts/shareyashe.js')
 
     // Username is passed to the client-side JavaScript which connects to the WebSockets server
-    script(type='text/javascript')
+    script
         if username
             | const shareYASHEusernameGotFromViewEngine = (new String("#{username}")).toString();
 block mainElementContent
@@ -39,4 +39,6 @@ block mainElementContent
         p This ShEx document is owned by:#{' '}
             each owner in shExDoc.owners
                 | #{owner}#{', '}
-        textarea
+        p
+            label(for='yasheEditor') Editor
+        textarea(id='yasheEditor')
