@@ -1,4 +1,4 @@
-import * as Y from 'https://esm.sh/yjs@13';
+import * as Y from './lib/yjs.js';
 import {WebsocketProvider} from './lib/y-websocket.js';
 import {CodemirrorBinding} from './lib/y-codemirror.js';
 

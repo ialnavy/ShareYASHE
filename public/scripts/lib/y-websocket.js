@@ -4,7 +4,7 @@
 
 /* eslint-env browser */
 
-import * as Y from 'https://esm.sh/yjs@13'
+import * as Y from './yjs.js'
 import * as bc from './lib0/broadcastchannel.js'
 import * as time from './lib0/time.js'
 import * as encoding from './lib0/encoding.js'

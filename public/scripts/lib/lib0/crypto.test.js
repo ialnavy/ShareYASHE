@@ -1,9 +1,9 @@
-import * as aes from 'lib0/crypto/aes-gcm.js'
-import * as rsa from 'lib0/crypto/rsa-oaep.js'
-import * as ecdsa from 'lib0/crypto/ecdsa.js'
+import * as aes from './crypto/aes-gcm.js'
+import * as rsa from './crypto/rsa-oaep.js'
+import * as ecdsa from './crypto/ecdsa.js'
 import * as t from './testing.js'
 import * as prng from './prng.js'
-import * as webcrypto from 'lib0/webcrypto'
+import * as webcrypto from './webcrypto'
 
 /**
  * @param {t.TestCase} tc

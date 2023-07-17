@@ -8,7 +8,7 @@ import * as time from '../lib0/time.js'
 import * as math from '../lib0/math.js'
 import { Observable } from '../lib0/observable.js'
 import * as f from '../lib0/function.js'
-import * as Y from 'https://esm.sh/yjs@13' // eslint-disable-line
+import * as Y from '../yjs.js' // eslint-disable-line
 
 export const outdatedTimeout = 30000
 

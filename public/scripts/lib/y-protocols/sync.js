@@ -4,7 +4,7 @@
 
 import * as encoding from '../lib0/encoding.js'
 import * as decoding from '../lib0/decoding.js'
-import * as Y from 'https://esm.sh/yjs@13'
+import * as Y from '../yjs.js'
 
 /**
  * @typedef {Map<number, number>} StateMap

@@ -4,7 +4,7 @@
 
 import {createMutex} from './lib0/mutex.js'
 import * as math from './lib0/math.js'
-import * as Y from 'https://esm.sh/yjs@13'
+import * as Y from './yjs.js'
 import * as func from './lib0/function.js'
 import * as eventloop from './lib0/eventloop.js'
 import {Observable} from './lib0/observable.js'

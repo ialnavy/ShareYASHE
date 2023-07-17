@@ -1,5 +1,5 @@
 
-import * as Y from 'https://esm.sh/yjs@13'
+import * as Y from '../yjs.js'
 import * as t from '../lib0/testing.js'
 import * as awareness from './awareness.js'
 

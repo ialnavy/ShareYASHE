@@ -1,5 +1,5 @@
 
-import * as Y from 'https://esm.sh/yjs@13' // eslint-disable-line
+import * as Y from '../yjs.js' // eslint-disable-line
 import * as encoding from '../lib0/encoding.js'
 import * as decoding from '../lib0/decoding.js'
 
